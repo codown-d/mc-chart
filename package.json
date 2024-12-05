@@ -1,0 +1,52 @@
+{
+  "name": "dongguan_shui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
+    "@antv/data-set": "^0.11.8",
+    "@antv/g2": "^5.2.0",
+    "@antv/hierarchy": "^0.6.13",
+    "@antv/x6": "^2.18.1",
+    "@antv/x6-plugin-keyboard": "^2.2.3",
+    "@antv/x6-plugin-selection": "^2.2.2",
+    "@chenfengyuan/vue-countdown": "^2.1.2",
+    "animate.css": "^4.1.1",
+    "ant-design-vue": "^4.2.3",
+    "axios": "^1.7.2",
+    "d3-array": "^3.2.4",
+    "dayjs": "^1.11.11",
+    "days": "^1.1.1",
+    "easy-drag": "^1.5.0",
+    "echarts": "^5.5.1",
+    "echarts-gl": "^2.0.9",
+    "html2canvas": "^1.4.1",
+    "insert-css": "^2.0.0",
+    "jquery": "^3.7.1",
+    "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
+    "md5": "^2.3.0",
+    "plotly.js": "^2.35.1",
+    "running-time": "^1.0.1",
+    "terser": "^5.31.1",
+    "vue": "^3.4.21",
+    "vue-horizontal-timeline": "^0.12.0",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "autoprefixer": "^10.4.20",
+    "less": "^4.2.0",
+    "postcss": "^8.4.49",
+    "postcss-px-to-viewport-8-plugin": "^1.2.5",
+    "tailwindcss": "^3.4.15",
+    "unplugin-vue-components": "^0.27.4",
+    "vite": "^5.2.8"
+  }
+}
