@@ -15,5 +15,6 @@ provide("echarts", echarts);
   </a-config-provider>
 </template>
 
-<style scoped>
+<style >
+
 </style>

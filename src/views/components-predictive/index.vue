@@ -6,10 +6,14 @@
         </template>
       </pangge-Header>
       <div
-        class="w-full h-[81.6296%] flex flex-col absolute left-0 bottom-0 overflow-hidden"
+        class="w-full h-[81.6296%]  flex flex-row absolute left-0 bottom-0 "
       >
-        <div class="px-[30px] pb-[30px] w-full h-full  bg-white">
+      <div class=" pb-[30px] flex-1 h-full  bg-white">
+            <ScatterContour/>
+        </div>
+        <div class=" pb-[30px] h-full  bg-white w-[50%]">
             <PredictiveMaintenance/>
+            <ThermalEfficiency/>
         </div>
       </div>
     </div>
@@ -21,6 +25,8 @@
   import API from "@/api";
   import dayjs from "dayjs";
   import PredictiveMaintenance  from "./components/predictive-maintenance.vue";
+  import ScatterContour  from "./components/scatter-contour.vue";
+  import ThermalEfficiency  from "./components/thermal-efficiency.vue";
   import { useDeviceInfo } from "@/hook/useDeviceInfo";
   
   const state = reactive({

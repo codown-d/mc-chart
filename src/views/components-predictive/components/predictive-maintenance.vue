@@ -1,5 +1,5 @@
 <template>
-  <div style="height: calc(100% - 35px)" class="relative">
+  <div style="height: calc(100%)" class="relative">
     <!-- <div class="absolute z-10 right-6 text-[14px]">
       设备：
       <a-select
