@@ -33,7 +33,7 @@ export default defineConfig({
     }
   },
   server: {
-    host: "0.0.0.0",
+    host: "150.158.93.25",
     port: 8898,
     // 是否开启 https
     https: false,
