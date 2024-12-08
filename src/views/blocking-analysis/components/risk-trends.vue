@@ -31,6 +31,7 @@ let valueLine = ref();
 let option = ref({
   color:['#5470c6', 'rgba(255, 255, 0, 0.7)', ],
   title: {
+    show:false,
     text: "阻力性能退化风险趋势",
     left: "8%",
     textStyle: {
@@ -48,7 +49,7 @@ let option = ref({
     borderWidth: 0,
     left: "8%",
     right: "6%",
-    top: "20%",
+    top: "12%",
     bottom: "20%",
   },
   xAxis: [

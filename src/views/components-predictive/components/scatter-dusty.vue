@@ -9,7 +9,7 @@
           :options="deviceInfoOp"
         ></a-select>
       </div> -->
-        <Scatter :data="data" ref="echartComponent" />
+        <Scatter :data="data" ref="echartComponent" :legend="true"/>
     </div>
 </template>
 <script setup lang="ts">

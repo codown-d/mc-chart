@@ -1,23 +1,35 @@
 <template>
   <div class="relative" style="height: calc(100%)">
-    <div class="absolute z-10 right-6 text-[14px]">
-      设备：<a-select
-        v-model:value="valueLine"
-        :size="'small'"
-        style="width: 80px"
-        :options="deviceInfoOp"
-      ></a-select>
-      参数：<a-select
-        v-model:value="valueLinePm"
-        mode="multiple"
-        :maxTagTextLength="10"
-        :maxTagCount="3"
-        :size="'small'"
-        placeholder="请选择参数"
-        style="width: 260px"
-        :options="optionsPm"
-      ></a-select>
+    <div class="absolute flex justify-between w-full z-50">
+      <div class="flex items-center">
+        <pangge-Title text="预热器关键参数趋势" class="ml-5 mr-4" />
+        <a-range-picker
+          v-model:value="valueTime"
+          show-time
+          size="small"
+          class="w-[320px]"
+        />
+      </div>
+      <div class="text-[14px] mr-5 flex justify-end flex-1 items-center">
+        设备：<a-select
+          v-model:value="valueLine"
+          size="small"
+          class="w-[80px]"
+          :options="deviceInfoOp"
+        ></a-select>
+        参数：<a-select
+          v-model:value="valueLinePm"
+          mode="multiple"
+          :maxTagTextLength="5"
+          :maxTagCount="2"
+          size="small"
+          placeholder="请选择参数"
+          class="w-[320px] min-w-[270px]"
+          :options="optionsPm"
+        ></a-select>
+      </div>
     </div>
+
     <Line :option="option" ref="echartComponent" />
   </div>
 </template>
@@ -131,15 +143,17 @@ let optionsPm = ref([
     value: "differ_pressure",
   },
 ]);
+let valueTime = ref();
 let option = ref({
   title: {
+    show: false,
     text: "预热器关键参数趋势",
     left: "7%",
   },
   grid: {
     left: "8%",
     right: "6%",
-    top: "20%",
+    top: "16%",
     bottom: "20%",
   },
   legend: {

@@ -24,11 +24,13 @@ import { merge } from "lodash";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import dayjs from "dayjs";
 import * as echarts from "echarts";
+import {generateData, sampleByPercentage } from "@/utils";
 const echartComponent = ref(null);
 const echartComponentBar = ref(null);
 let valueLine = ref();
 let option = ref({
   title: {
+    show:false,
     text: "阻力性能退化风险趋势",
     left: "8%",
     textStyle: {
@@ -44,61 +46,62 @@ let option = ref({
       { offset: 0, color: "rgba(0, 128, 0, 0.1)" }, // 渐变结束色
     ]),
     borderWidth: 0,
-    left: "8%",
-    right: "6%",
-    top: "20%",
-    bottom: "20%",
+    left: "4%",
+    right: "4%",
+    top: "10%",
+    bottom: "10%",
   },
-  visualMap: {
-    top: 50,
-    right: 10,
-    pieces: [
-      {
-        gt: 0,
-        lte: 50,
-        color: "#93CE07",
-      },
-      {
-        gt: 50,
-        lte: 100,
-        color: "#FBDB0F",
-      },
-      {
-        gt: 100,
-        lte: 150,
-        color: "#FC7D02",
-      },
-      {
-        gt: 150,
-        lte: 200,
-        color: "#FD0100",
-      },
-      {
-        gt: 200,
-        lte: 300,
-        color: "#AA069F",
-      },
-      {
-        gt: 300,
-        color: "#AC3B2A",
-      },
-    ],
-    outOfRange: {
-      color: "#999",
-    },
-  },
+  // visualMap: {
+  //   top: 50,
+  //   right: 10,
+  //   pieces: [
+  //     {
+  //       gt: 0,
+  //       lte: 50,
+  //       color: "#93CE07",
+  //     },
+  //     {
+  //       gt: 50,
+  //       lte: 100,
+  //       color: "#FBDB0F",
+  //     },
+  //     {
+  //       gt: 100,
+  //       lte: 150,
+  //       color: "#FC7D02",
+  //     },
+  //     {
+  //       gt: 150,
+  //       lte: 200,
+  //       color: "#FD0100",
+  //     },
+  //     {
+  //       gt: 200,
+  //       lte: 300,
+  //       color: "#AA069F",
+  //     },
+  //     {
+  //       gt: 300,
+  //       color: "#AC3B2A",
+  //     },
+  //   ],
+  //   outOfRange: {
+  //     color: "#999",
+  //   },
+  // },
   xAxis: [
     {
-      type: "category",
-      // axisLabel: {
-      //   formatter: "{yyyy}-{MM}-{dd}",
-      // },
+      type: "time",
+      boundaryGap: false,
+      show: false,
+      position: "top", // x 轴放到顶部
     },
   ],
   yAxis: [
     {
       // name: "yAxis-name",
       type: "value",
+      // inverse: true,
       splitLine: {
         show: false, // 设置为 false，隐藏横向网格线
       },
@@ -139,68 +142,115 @@ const getDeviceAV = (deviceName) => {
   };
   API.getData(params).then((res) => {
     const chartInstance = echartComponent.value.getChartInstance();
+    let data = res.data.slice(0, 10);
+    let last = data.at(-1).timestamp
+    let startT = dayjs(data[0].timestamp).valueOf();
+    let endT = dayjs(last).add(2, "day").valueOf();
+let seriesData = generateData(startT,last,5)
+    let endedT = dayjs(endT).add(1, "day").valueOf();
+    let samples = sampleByPercentage(startT, endT, [20, 30])
+    let midT = dayjs((startT + endT) / 2).valueOf();
     chartInstance.setOption(
       merge({}, option.value, {
         xAxis: [
           {
-            type: "category",
-            data: res.data.map((item) => dayjs(item.timestamp).format("MM-DD")),
+            min: startT,
+            max: endedT,
           },
         ],
         series: [
           {
-            name: "堵灰趋势",
+            name: "参考衰减趋势",
             type: "line",
             symbol: "none",
-            data: res.data.map((item) => {
-              return item.KPI_CV;
-            }),
+            smooth: true,
+            data: [
+              [startT, 1],
+              [midT, 0.8],
+              [endT, 0],
+            ],
+            //   // markLine: {
+            //   //   silent: true,
+            //   //   label: {
+            //   //     show: true,
+            //   //     formatter: "{b}:{c}",
+            //   //   },
+            //   //   lineStyle: {
+            //   //     color: "#333",
+            //   //   },
+            //   //   data: [
+            //   //     {
+            //   //       yAxis: 0.3,
+            //   //       name: "最小值",
+            //   //     },
+            //   //     {
+            //   //       yAxis: 0.9,
+            //   //       name: "最大值",
+            //   //     },
+            //   //   ],
+            //   // },
+          },
+          {
+            name: "实际衰减趋势",
+            type: "line",
+            symbol: "none",
+            data: seriesData,
             markLine: {
-              silent: true,
-              label: {
-                show: true,
-                formatter: "{b}:{c}",
-              },
-              lineStyle: {
-                color: "#333",
-              },
               data: [
                 {
-                  yAxis: 0.3,
-                  x: 200, // 起始点 x 坐标
-                  y: -200, // 起始点 y 坐标
-                  name: "最小值",
-                },
-                {
-                  yAxis: 0.9,
-                  name: "最大值",
+                  xAxis: dayjs(last).valueOf(),
+                  label: {
+                    show: false,
+                    position: 'end',
+                    formatter: function (params) {
+                      return `${dayjs(params.data.xAxis).format("YYYY-MM-DD HH:mm:ss")}`;
+                    },
+                  },
+                  lineStyle: {
+                    color: "#ff0000", // 红色线
+                    width: 1,
+                    type: "dashed", // 虚线
+                  },
                 },
               ],
+              symbol: ['none', 'none'],
+              label: {
+                show: true,
+                position: "start", // 标签显示在竖线的开始位置
+              },
             },
           },
           {
-            name: "趋势参考线",
-            type: "line",
-            symbol: "none",
-            data: res.data.map((item) => {
-              return item.RMSE;
-            }),
-            markLine: {
+            type: 'line',
+            markArea: {
+              silent: true, // 确保标记区域不会触发鼠标事件
               data: [
-                {
-                  xAxis: dayjs("2013-02-03 05:00:00").format("MM-DD"),
-                  name: "特定日期",
-                  lineStyle: {
-                color: "#ff0000", // 红色线
-                width: 2,
-                type: "dashed", // 虚线
-              }
-                }, // 在 'Wed' 列上绘制竖线
-              ],
-              // label: {
-              //   show: true,
-              //   position: "start", // 标签显示在竖线的开始位置
-              // },
+                [
+                  {
+                    xAxis: startT,
+                    yAxis: 0,
+                    itemStyle: { color: '#09ae3a' },
+                  }, 
+                  { xAxis: samples[0], yAxis: 0.05 },
+                ],
+
+                [
+                  {
+                    xAxis: samples[0],
+                    yAxis: 0,
+                    itemStyle: { color: '#ffed00' },
+                  }, 
+                  { xAxis: samples[1], yAxis: 0.05},
+                ],
+                [
+                  {
+                    xAxis: samples[1],
+                    yAxis: 0,
+                    itemStyle: { color: '#ab0404' },
+                  }, 
+                  { xAxis: endedT, yAxis: 0.05 },
+                ],
+              ]
             },
           },
         ],

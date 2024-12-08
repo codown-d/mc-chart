@@ -1,6 +1,6 @@
 <template>
-    <div style="height: calc(100%)" class="relative">
-        <!-- <div class="absolute z-10 right-6 text-[14px]">
+  <div style="height: calc(100%)" class="relative">
+    <!-- <div class="absolute z-10 right-6 text-[14px]">
         设备：
         <a-select
           v-model:value="valueLine"
@@ -9,12 +9,12 @@
           :options="deviceInfoOp"
         ></a-select>
       </div> -->
-        <Efficiency :data="data" ref="echartComponent" />
-    </div>
+    <Line :option="option" ref="echartComponent" />
+  </div>
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
-import Efficiency from "../d3/efficiency.vue";
+import Line from "@/views/blocking-analysis/echarts/line.vue";
 import API from "@/api";
 import { merge } from "lodash";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
@@ -22,98 +22,115 @@ import dayjs from "dayjs";
 import * as echarts from "echarts";
 
 import data from "../data/temperature.js";
-console.log(data)
+import {generateRandomPoints} from "@/utils/index.js";
 const echartComponent = ref(null);
 let valueLine = ref();
-console.log(data)
-
 let { deviceInfoOp } = useDeviceInfo();
 watch(deviceInfoOp, (data) => {
-    valueLine.value = data[0].value;
+  valueLine.value = data[0].value;
+});
+
+let option = ref({
+  title: {
+    show: false,
+    text: "热效率历史趋势",
+    left: "7%",
+  },
+  //   grid: {
+  //     left: "8%",
+  //     right: "6%",
+  //     top: "20%",
+  //     bottom: "20%",
+  //   },
+
+  grid: {
+    show: true, // 启用背景
+    backgroundColor: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+      // 上到下的渐变
+      { offset: 1, color: "rgba(255, 0, 0, 0.1)" }, // 渐变起始色
+      { offset: 0.5, color: "rgba(255, 255, 0, 0.1)" }, // 渐变起始色
+      { offset: 0, color: "rgba(0, 128, 0, 0.1)" }, // 渐变结束色
+    ]),
+    borderWidth: 0,
+    left: "4%",
+    right: "6%",
+    top: "10%",
+    bottom: "12%",
+  },
+  visualMap: [
+    {
+      show: true,
+      type: "continuous",
+      seriesIndex: 0,
+      min: 0,
+      max: 200,
+      inRange: {
+        color: ["#ff0", "#f00"], // 设定范围内的颜色
+      },
+      outOfRange: {
+        color: ["#000"], // 超出范围的颜色
+      },
+      left: 'right',  // 水平居中
+      top: 'center',      // 垂直居上
+    },
+  ],
+  xAxis: [
+    {show:false,
+      type: "time",
+    },
+  ],
+  yAxis: [
+    {
+      show:false,
+      type: "value",
+      splitLine: {
+        show: false, // 设置为 false，隐藏横向网格线
+      },
+    },
+  ],
+  series: [],
 });
 const getDeviceAV = (deviceName) => {
-    var params = {
-        deviceName,
-        dataType: "DeviceDegradation",
-        // timeFrom:  dayjs().subtract(60, 'day'),
-        // timeEnd: dayjs(),
-        timeFrom: "2013-02-01T20:55:00+08:00",
-        timeEnd: "2013-04-02T00:00:00+08:00",
-    };
-    API.getData(params).then((res) => {
-        //   const chartInstance = echartComponent.value.getChartInstance();
-        //   chartInstance.setOption(
-        //     merge({}, option.value, {
-        //       xAxis: [
-        //         {
-        //           type: "category",
-        //           data: res.data.map((item) => dayjs(item.timestamp).format("MM-DD")),
-        //         },
-        //       ],
-        //       series: [
-        //         {
-        //           name: "堵灰趋势",
-        //           type: "line",
-        //           symbol: "none",
-        //           data: res.data.map((item) => {
-        //             return item.KPI_CV;
-        //           }),
-        //           markLine: {
-        //             silent: true,
-        //             label: {
-        //               show: true,
-        //               formatter: "{b}:{c}",
-        //             },
-        //             lineStyle: {
-        //               color: "#333",
-        //             },
-        //             data: [
-        //               {
-        //                 yAxis: 0.3,
-        //                 x: 200, // 起始点 x 坐标
-        //                 y: -200, // 起始点 y 坐标
-        //                 name: "最小值",
-        //               },
-        //               {
-        //                 yAxis: 0.9,
-        //                 name: "最大值",
-        //               },
-        //             ],
-        //           },
-        //         },
-        //         {
-        //           name: "趋势参考线",
-        //           type: "line",
-        //           symbol: "none",
-        //           data: res.data.map((item) => {
-        //             return item.RMSE;
-        //           }),
-        //           markLine: {
-        //             data: [
-        //               {
-        //                 xAxis: dayjs("2013-02-03 05:00:00").format("MM-DD"),
-        //                 name: "特定日期",
-        //                 lineStyle: {
-        //               color: "#ff0000", // 红色线
-        //               width: 2,
-        //               type: "dashed", // 虚线
-        //             }
-        //               }, // 在 'Wed' 列上绘制竖线
-        //             ],
-        //             // label: {
-        //             //   show: true,
-        //             //   position: "start", // 标签显示在竖线的开始位置
-        //             // },
-        //           },
-        //         },
-        //       ],
-        //     })
-        //   );
-    });
+  var params = {
+    deviceName,
+    dataType: "DeviceDegradation",
+    // timeFrom:  dayjs().subtract(60, 'day'),
+    // timeEnd: dayjs(),
+    timeFrom: "2013-02-01T20:55:00+08:00",
+    timeEnd: "2013-04-02T00:00:00+08:00",
+  };
+  API.getData(params).then((res) => {
+    const chartInstance = echartComponent.value.getChartInstance();
+    let data = res.data;
+    let last = data.at(-1).timestamp
+    let startT = dayjs(data[0].timestamp).valueOf();
+    let endT = dayjs(last).add(0, "day").valueOf();
+
+    let seriesData = generateRandomPoints(startT, endT, 100)
+    chartInstance.setOption(
+      merge({}, option.value, {
+        xAxis: [
+          {
+            min: startT,
+            max: endT,
+          },
+        ],
+        series: [
+          {
+            name: "换热效率趋势",
+            type: "line",
+            symbol: "none",
+            data: seriesData,
+          },
+        ],
+      })
+    );
+  });
 };
 watch(valueLine, (data) => {
-    getDeviceAV(data);
+  getDeviceAV(data);
 });
-onMounted(() => {
-});
+onMounted(() => { });
+
+
 </script>

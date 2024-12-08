@@ -17,10 +17,11 @@
           </div>
         </div>
         <div class="flex flex-col flex-1 w-0">
-          <div class="bg-white h-[50%] py-[20px]">
+          <div class="bg-white h-[50%] py-[20px] relative">
+            <pangge-Title text="阻力性能退化风险趋势" class="mb-[10px] absolute ml-5"></pangge-Title>
             <RiskTrends />
           </div>
-          <div class="bg-white h-0 flex-1 py-[20px] mt-[20px]">
+          <div class="bg-white h-0 flex-1 py-[20px] mt-[20px] relative">
             <PreheaterGraph />
           </div>
         </div>

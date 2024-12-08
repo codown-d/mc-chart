@@ -5,6 +5,8 @@ import OverView from '@/views/overview/index.vue'
 import EquipmentAnalysis from '@/views/equipment-analysis/index.vue'
 import Vibration from '@/views/vibration/index.vue'
 import Availability from '@/views/availability/index.vue'
+import DeviceAvailability from '@/views/device-availability/index.vue'
+
 import EnergyPage from '@/views/energy/index.vue'
 import Equipment from '@/views/equipment/index.vue'
 import Child from '@/views/child.vue'
@@ -53,6 +55,12 @@ const router = createRouter({
       path: '/availability/:deviceType',
       name: 'availability',
       component: Availability
+    },
+    
+    {
+      path: '/availability2/:deviceType',
+      name: 'availability2',
+      component: DeviceAvailability
     },
     {
       path: '/energy/:deviceType',
