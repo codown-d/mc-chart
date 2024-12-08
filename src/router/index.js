@@ -4,6 +4,7 @@ import welcomeView from '@/views/welcome.vue'
 import OverView from '@/views/overview/index.vue'
 import EquipmentAnalysis from '@/views/equipment-analysis/index.vue'
 import Vibration from '@/views/vibration/index.vue'
+import SootblowingEfficiency from '@/views/sootblowing-efficiency/index.vue'
 import Availability from '@/views/availability/index.vue'
 import DeviceAvailability from '@/views/device-availability/index.vue'
 
@@ -49,6 +50,11 @@ const router = createRouter({
       path: '/vibration/:deviceType',
       name: 'vibration',
       component: Vibration
+    },
+    {
+      path: '/vibration2/:deviceType',
+      name: 'vibration2',
+      component: SootblowingEfficiency
     },
 
     {
