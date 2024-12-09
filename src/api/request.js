@@ -64,7 +64,7 @@ function Requsest({
         }
 
         const RequsestData = {
-            url: url,
+            url: '/api'+url,
             method: method,
             headers,
             [(Tmethod || method) === 'get' ? 'params' : 'data']: params,
