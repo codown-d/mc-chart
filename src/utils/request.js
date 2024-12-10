@@ -7,7 +7,7 @@ import _ from 'lodash'
 // 创建 axios 实例
 const request = axios.create({
     // API 请求的默认前缀
-    baseURL: '/api',
+    baseURL: '',
     timeout: 300000 // 请求超时时间
 })
 
