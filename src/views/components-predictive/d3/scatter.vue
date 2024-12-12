@@ -1,11 +1,6 @@
 <template>
   <div class="relative w-full h-full">
-    <div
-      class="chart"
-      :class="class"
-      ref="chartContainer"
-      style="height: 100%; width: 100%"
-    ></div>
+    <div class="chart" :class="class" ref="chartContainer" style="height: 100%; width: 100%"></div>
     <a-spin v-if="!isReady" class="absolute z-10 top-[50%] left-[50%]" />
   </div>
 </template>
@@ -20,7 +15,11 @@ interface ChartData {
   height: number;
   values: number[];
 }
-
+interface PointData {
+  x: number;
+  y: number;
+  color: string; // 每个点的颜色
+}
 const props = defineProps<{
   data: ChartData;
   legend: {
@@ -28,6 +27,10 @@ const props = defineProps<{
     required: false, // 设置为 false，使其成为可选项
     default: false // 设置默认值为 true
   },
+  pointSets: {
+    type:  PointData[],
+    default: [] // 设置默认值为 true
+  }
 }>();
 
 // 动态计算 isReady，判断数据是否已经准备好
@@ -39,20 +42,20 @@ const isReady = computed(() => {
 const chartContainer = ref<HTMLElement | null>(null);
 
 // 绘制图表的函数
+
+let chart = ref()
 const drawChart = () => {
   if (!chartContainer.value) return; // 确保容器存在
+  chart.value&&chartContainer.value?.removeChild(chart.value)
   const data = props.data;
-  const randomPoints = Array.from({ length: 10 }, () => [
-    Math.random() * data.width,  // 随机生成 X 坐标
-    Math.random() * data.height, // 随机生成 Y 坐标
-  ]);
-  console.log(data.width)
-  const chart = Plot.plot({
+  const pointSets = props?.pointSets||[];
+  console.log(pointSets)
+  chart.value = Plot.plot({
     color: {
       legend: props.legend,
-      padding:20,
-      transform:(y) => (y) /1,
-      labelOffset:20,
+      padding: 20,
+      transform: (y) => (y) / 1,
+      labelOffset: 20,
       tickPadding: 10,
       label: "Elevation (m)",
     },
@@ -63,15 +66,32 @@ const drawChart = () => {
         fill: Plot.identity,
         stroke: "black",
       }),
-    Plot.dot(randomPoints , { fill: 'red', r: 5,stroke: 'black' }),  
+      Plot.dot(pointSets, {
+          x: 'x',
+          y: 'y', 
+          fill: (d) => d.color, 
+          r: 5, 
+          stroke: 'black'
+        })
+      // Plot.dot(randomPoints , { fill: 'red', r: 5,stroke: 'black' }),  
     ],
   });
-  chartContainer.value.appendChild(chart);
+  chartContainer.value.appendChild(chart.value);
 };
 
 // 监听数据变化，自动重新绘制图表
 watch(
   () => props.data,
+  (newData, oldData) => {
+    console.log(newData);
+    if (newData !== oldData) {
+      drawChart(); // 数据变化时重新绘制图表
+    }
+  },
+  { immediate: true }
+);
+watch(
+  () => props.pointSets,
   (newData, oldData) => {
     console.log(newData);
     if (newData !== oldData) {

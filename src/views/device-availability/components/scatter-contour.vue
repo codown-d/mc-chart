@@ -18,105 +18,39 @@ import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import dayjs from "dayjs";
 const echartComponent = ref(null);
 let valueLine = ref();
-let valueLinePm = ref(["Gas_Inlet_Temperture", "Gas_Outlet_Temperture"]);
+let valueLinePm = ref(["Aar", "CCET_Value"]);
+/**
+ * 
+ * 
+ * Aar
+CCET_Value
+Convscr
+Date
+Device_Name
+Qetar
+Sar
+ */
 let optionsPm = ref([
     {
-        label: "烟气入口温度",
-        value: "Gas_Inlet_Temperture",
+        label: "Aar",
+        value: "Aar",
     },
     {
-        label: "烟气出口温度",
-        value: "Gas_Outlet_Temperture",
+        label: "CCET_Value",
+        value: "CCET_Value",
     },
     {
-        label: "一次风机入口温度",
-        value: "PA_Inlet_Temperture",
+        label: "Convscr",
+        value: "Convscr",
     },
     {
-        label: "一次风机出口温度",
-        value: "PA_Outlet_Temperture",
-    },
-
-    {
-        label: "二次风机入口温度",
-        value: "SA_Inlet_Temperture",
-    },
-    {
-        label: "二次风机出口温度",
-        value: "SA_Outlet_Temperture",
+        label: "Qetar",
+        value: "Qetar",
     },
 
     {
-        label: "烟气入口压力",
-        value: "Gas_Inlet_Pressure",
-    },
-    {
-        label: "烟气出口压力",
-        value: "Gas_Outlet_Pressure",
-    },
-    {
-        label: "一次风机入口压力",
-        value: "PA_Inlet_Pressure",
-    },
-    {
-        label: "一次风机出口压力",
-        value: "PA_Outlet_Pressure",
-    },
-    {
-        label: "二次风机入口压力",
-        value: "SA_Inlet_Pressure",
-    },
-    {
-        label: "二次风机出口压力",
-        value: "SA_Outlet_Pressure",
-    },
-    {
-        label: "一次风机风量",
-        value: "PA_Flow",
-    },
-    {
-        label: "二次风机风量",
-        value: "SA_Flow",
-    },
-    {
-        label: "总风量",
-        value: "Total_Air_Flow",
-    },
-    {
-        label: "蒸汽压力",
-        value: "Steam_Blowing_Pressure",
-    },
-    {
-        label: "烟气进口含氧量",
-        value: "O2_Inlet_Level_P2",
-    },
-    {
-        label: "烟气出口含氧量",
-        value: "O2_Inlet_Level_P2",
-    },
-    {
-        label: "烟气含氧量占比",
-        value: "O2_Out_Level",
-    },
-    {
-        label: "冷端综合温度",
-        value: "CCET",
-    },
-    {
-        label: "吹灰蒸汽温度",
-        value: "steam_temperature",
-    },
-    {
-        label: "吹灰压力",
-        value: "dust_pressure",
-    },
-    {
-        label: "吹灰蒸汽压力",
-        value: "steam_pressure",
-    },
-    {
-        label: "烟气差压",
-        value: "differ_pressure",
+        label: "Sar",
+        value: "Sar",
     },
 ]);
 let option = ref({
@@ -153,9 +87,9 @@ let option = ref({
     yAxis: [
         {
             type: "value",
-    splitArea: {
-      show: true
-    }
+            splitArea: {
+                show: true
+            }
         },
     ],
     series: [],
@@ -168,7 +102,7 @@ watch(deviceInfoOp, (data) => {
 const getDeviceAV = () => {
     var params = {
         deviceName: valueLine.value,
-        dataType: "DeviceData",
+        dataType: "DeviceCCET",
         output: valueLinePm.value.join(","),
         timeFrom: "2013-01-02T23:59:59+08:00",
         timeEnd: "2013-03-02T00:00:00+08:00",
@@ -190,7 +124,7 @@ const getDeviceAV = () => {
                     type: "line",
                     symbol: "none",
                     data: res.data.map((ite) => {
-                        return [dayjs(ite.timestamp).valueOf(),ite[item]];
+                        return [dayjs(ite.Date).valueOf(), ite[item]];
                     }),
                 };
             }),

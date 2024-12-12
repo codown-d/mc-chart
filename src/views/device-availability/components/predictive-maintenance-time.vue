@@ -1,19 +1,7 @@
 <template>
   <div style="height: calc(100%)" class="relative">
-    <!-- <div class="absolute z-10 right-6 text-[14px]">
-      设备：
-      <a-select
-        v-model:value="valueLine"
-        :size="'small'"
-        style="width: 100px"
-        :options="deviceInfoOp"
-      ></a-select>
-    </div> -->
     <Line :option="option" ref="echartComponent" />
   </div>
-  <!-- <div class="h-[35px]">
-    <Bar :option="optionBar" ref="echartComponentBar" />
-  </div> -->
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
@@ -24,9 +12,7 @@ import { useDeviceInfo } from "@/hook/useDeviceInfo";
 
 import timeLineData from "@/views/availability/echarts/timeLineData.json";
 import dayjs from "dayjs";
-import * as echarts from "echarts";
 const echartComponent = ref(null);
-const echartComponentBar = ref(null);
 let valueLine = ref();
 let option = ref({
   title: {
@@ -45,7 +31,7 @@ let option = ref({
   yAxis: [
     {
       // name: "yAxis-name",
-      show:false,
+      show: false,
       type: "value",
       max: 4,
       splitLine: {
@@ -63,13 +49,14 @@ watch(deviceInfoOp, (data) => {
 const getDeviceAV = (deviceName) => {
   var params = {
     deviceName,
-    dataType: "DeviceDegradation",
+    dataType: "DeviceAV",
     // timeFrom:  dayjs().subtract(60, 'day'),
     // timeEnd: dayjs(),
     timeFrom: "2013-02-01T20:55:00+08:00",
     timeEnd: "2013-04-02T00:00:00+08:00",
   };
   API.getData(params).then((res) => {
+    console.log(res)
     const chartInstance = echartComponent.value.getChartInstance();
     let data = timeLineData.map(item => {
       return {
@@ -81,7 +68,7 @@ const getDeviceAV = (deviceName) => {
       return [{
         xAxis: dayjs(item.timestamp).valueOf(),
         yAxis: index % 2 == 0 ? 0 : 4,
-        itemStyle: { color: item.composer=='Alarm'?'#e5512c':'#09ae3a' },
+        itemStyle: { color: item.composer == 'Alarm' ? '#e5512c' : '#09ae3a' },
         label: {
           show: true,
           position: "start",

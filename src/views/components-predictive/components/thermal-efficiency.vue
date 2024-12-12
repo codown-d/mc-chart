@@ -52,9 +52,9 @@ let option = ref({
       { offset: 0, color: "rgba(0, 128, 0, 0.1)" }, // 渐变结束色
     ]),
     borderWidth: 0,
-    left: "4%",
+    left: "10%",
     right: "6%",
-    top: "10%",
+    top: "15%",
     bottom: "12%",
   },
   visualMap: [
@@ -81,7 +81,6 @@ let option = ref({
   ],
   yAxis: [
     {
-      show:false,
       type: "value",
       splitLine: {
         show: false, // 设置为 false，隐藏横向网格线
@@ -93,7 +92,7 @@ let option = ref({
 const getDeviceAV = (deviceName) => {
   var params = {
     deviceName,
-    dataType: "DeviceDegradation",
+    dataType: "DeviceHotefficiencyLSTM",
     // timeFrom:  dayjs().subtract(60, 'day'),
     // timeEnd: dayjs(),
     timeFrom: "2013-02-01T20:55:00+08:00",
@@ -102,11 +101,10 @@ const getDeviceAV = (deviceName) => {
   API.getData(params).then((res) => {
     const chartInstance = echartComponent.value.getChartInstance();
     let data = res.data;
-    let last = data.at(-1).timestamp
+    let last = data.at(-1)
     let startT = dayjs(data[0].timestamp).valueOf();
-    let endT = dayjs(last).add(0, "day").valueOf();
-
-    let seriesData = generateRandomPoints(startT, endT, 100)
+    let endT = dayjs(last.timestamp).add(0, "day").valueOf();
+    console.log(last)
     chartInstance.setOption(
       merge({}, option.value, {
         xAxis: [
@@ -115,12 +113,25 @@ const getDeviceAV = (deviceName) => {
             max: endT,
           },
         ],
+        yAxis: [{
+          max: last.threshold*1.2
+        }],
         series: [
           {
             name: "换热效率趋势",
             type: "line",
             symbol: "none",
-            data: seriesData,
+            data: data.map(item=>{
+              return [dayjs(item.timestamp).valueOf(),item.trendvalue]
+            }),
+          },
+          {
+            name: "阈值线",
+            type: "line",
+            symbol: "none",
+            data: data.map(item=>{
+              return [dayjs(item.timestamp).valueOf(),item.threshold]
+            }),
           },
         ],
       })

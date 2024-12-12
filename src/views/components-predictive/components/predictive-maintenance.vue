@@ -1,36 +1,22 @@
 <template>
-  <div style="height: calc(100%)" class="relative">
-    <!-- <div class="absolute z-10 right-6 text-[14px]">
-      设备：
-      <a-select
-        v-model:value="valueLine"
-        :size="'small'"
-        style="width: 100px"
-        :options="deviceInfoOp"
-      ></a-select>
-    </div> -->
+  <div style="height: calc(100%)" class="relative flex">
     <Line :option="option" ref="echartComponent" />
   </div>
-  <!-- <div class="h-[35px]">
-    <Bar :option="optionBar" ref="echartComponentBar" />
-  </div> -->
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Line from "@/views/blocking-analysis/echarts/line.vue";
-import Bar from "@/views/equipment-analysis/echarts/bar.vue";
 import API from "@/api";
 import { merge } from "lodash";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import dayjs from "dayjs";
 import * as echarts from "echarts";
-import {generateData, sampleByPercentage } from "@/utils";
+import { generateData, sampleByPercentage } from "@/utils";
 const echartComponent = ref(null);
-const echartComponentBar = ref(null);
 let valueLine = ref();
 let option = ref({
   title: {
-    show:false,
+    show: false,
     text: "阻力性能退化风险趋势",
     left: "8%",
     textStyle: {
@@ -46,49 +32,34 @@ let option = ref({
       { offset: 0, color: "rgba(0, 128, 0, 0.1)" }, // 渐变结束色
     ]),
     borderWidth: 0,
-    left: "4%",
+    left: "20%",
     right: "4%",
     top: "10%",
     bottom: "10%",
   },
-  // visualMap: {
-  //   top: 50,
-  //   right: 10,
-  //   pieces: [
-  //     {
-  //       gt: 0,
-  //       lte: 50,
-  //       color: "#93CE07",
-  //     },
-  //     {
-  //       gt: 50,
-  //       lte: 100,
-  //       color: "#FBDB0F",
-  //     },
-  //     {
-  //       gt: 100,
-  //       lte: 150,
-  //       color: "#FC7D02",
-  //     },
-  //     {
-  //       gt: 150,
-  //       lte: 200,
-  //       color: "#FD0100",
-  //     },
-  //     {
-  //       gt: 200,
-  //       lte: 300,
-  //       color: "#AA069F",
-  //     },
-  //     {
-  //       gt: 300,
-  //       color: "#AC3B2A",
-  //     },
-  //   ],
-  //   outOfRange: {
-  //     color: "#999",
-  //   },
-  // },
+  legend:[
+  {
+    left: 'left', // 将图例放在左侧
+    top: '20%',
+    orient: 'vertical', // 设置图例垂直排列
+    icon: 'rect', // 使用矩形代替默认图标
+    itemWidth: 20, // 横线的宽度
+    itemHeight: 10, // 横线的高度
+    data: ['正常区间', '告警区间', '危险区间' ],
+    selectedMode: false,  //
+    
+  },
+  {
+    left: 'left', // 将图例放在左侧
+    top: '47%',
+    orient: 'vertical', // 设置图例垂直排列
+    icon: 'rect', // 使用矩形代替默认图标
+    itemWidth: 20, // 横线的宽度
+    itemHeight: 2, // 横线的高度
+    data: ['参考衰减趋势', '实际衰减趋势', ],
+  
+  }
+  ],
   xAxis: [
     {
       type: "time",
@@ -109,23 +80,6 @@ let option = ref({
   ],
   series: [],
 });
-let optionBar = ref({
-  yAxis: {
-    type: "category",
-    show: false,
-  },
-  xAxis: {
-    type: "value",
-    show: false,
-  },
-  grid: {
-    left: "8%", // 10% of the container's width from the left side
-    right: "6%", // 10% of the container's width from the right side
-    top: "1%", // 20% of the container's height from the top
-    bottom: "0%", // 15% of the container's height from the bottom
-  },
-  series: [],
-});
 
 let { deviceInfoOp } = useDeviceInfo();
 watch(deviceInfoOp, (data) => {
@@ -134,21 +88,21 @@ watch(deviceInfoOp, (data) => {
 const getDeviceAV = (deviceName) => {
   var params = {
     deviceName,
-    dataType: "DeviceDegradation",
+    dataType: "DeviceCBM",
     // timeFrom:  dayjs().subtract(60, 'day'),
     // timeEnd: dayjs(),
-    timeFrom: "2013-02-01T20:55:00+08:00",
-    timeEnd: "2013-04-02T00:00:00+08:00",
+    timeFrom: "2021-06-14T00:00:00+08:00",
+    timeEnd: "2021-07-22T00:00:00+08:00",
   };
   API.getData(params).then((res) => {
+    console.log(res)
     const chartInstance = echartComponent.value.getChartInstance();
-    let data = res.data.slice(0, 10);
+    let data = res.data;
     let last = data.at(-1).timestamp
     let startT = dayjs(data[0].timestamp).valueOf();
-    let endT = dayjs(last).add(2, "day").valueOf();
-let seriesData = generateData(startT,last,5)
-    let endedT = dayjs(endT).add(1, "day").valueOf();
-    let samples = sampleByPercentage(startT, endT, [20, 30])
+    let endT = dayjs(last.Predictendtime).valueOf();
+    let endedT = dayjs(last.Max_date).valueOf();
+    let samples = sampleByPercentage(startT, endT, [10, 30])
     let midT = dayjs((startT + endT) / 2).valueOf();
     chartInstance.setOption(
       merge({}, option.value, {
@@ -194,7 +148,9 @@ let seriesData = generateData(startT,last,5)
             name: "实际衰减趋势",
             type: "line",
             symbol: "none",
-            data: seriesData,
+            data: data.map(item => {
+              return [dayjs(item.timestamp).valueOf(), item.value]
+            }),
             markLine: {
               data: [
                 {
@@ -221,6 +177,36 @@ let seriesData = generateData(startT,last,5)
             },
           },
           {
+            name: '正常区间',
+            data: [],
+            type: 'line',  // 或者其他类型，随意设置
+            silent: true, // 使得此系列不显示实际图形
+            itemStyle: {
+              color: '#09ae3a',  // 设置 Bar Group 1 的颜色
+            },
+          },
+
+          {
+            name: '告警区间',
+            data: [],
+            type: 'line',  // 或者其他类型，随意设置
+            silent: true, // 使得此系列不显示实际图形
+            itemStyle: {
+              color: '#ffed00',  // 设置 Bar Group 1 的颜色
+            },
+          },
+
+          {
+            name: '危险区间',
+            data: [],
+            type: 'line',  // 或者其他类型，随意设置
+            silent: true, // 使得此系列不显示实际图形
+            itemStyle: {
+              color: '#ab0404',  // 设置 Bar Group 1 的颜色
+            },
+          },
+
+          {
             type: 'line',
             markArea: {
               silent: true, // 确保标记区域不会触发鼠标事件
@@ -230,24 +216,23 @@ let seriesData = generateData(startT,last,5)
                     xAxis: startT,
                     yAxis: 0,
                     itemStyle: { color: '#09ae3a' },
-                  }, 
+                  },
                   { xAxis: samples[0], yAxis: 0.05 },
                 ],
-
                 [
                   {
                     xAxis: samples[0],
                     yAxis: 0,
                     itemStyle: { color: '#ffed00' },
-                  }, 
-                  { xAxis: samples[1], yAxis: 0.05},
+                  },
+                  { xAxis: samples[1], yAxis: 0.05 },
                 ],
                 [
                   {
                     xAxis: samples[1],
                     yAxis: 0,
                     itemStyle: { color: '#ab0404' },
-                  }, 
+                  },
                   { xAxis: endedT, yAxis: 0.05 },
                 ],
               ]

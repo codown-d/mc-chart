@@ -1,14 +1,12 @@
 <template>
-  <Pie :option="option" ref="echartComponent" />
+   <div class="relative" style="height: calc(100%)">
+        <Pie :option="option" ref="echartComponent" />
+    </div>
 </template>
 <script setup lang="ts">
 import { onMounted, defineProps, ref, nextTick, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { Select, SelectOption, Pagination, Popover } from "ant-design-vue";
 import Pie from "@/views/equipment-analysis/echarts/pie.vue";
 import API from "@/api";
-import { useDeviceInfo } from "@/hook/useDeviceInfo";
-import dayjs from "dayjs";
 import { merge } from "lodash";
 const echartComponent = ref(null);
 let option = ref({
@@ -59,8 +57,8 @@ const props = defineProps({
 watch(props, (newValue) => {
   getDeviceAV(newValue.device_info.Device_Name);
 });
-
 const getDeviceAV = (deviceName) => {
+  console.log(props,deviceName)
   var params = {
     deviceName,
     dataType: "DeviceAV",
@@ -89,7 +87,6 @@ const getDeviceAV = (deviceName) => {
   API.getDataAgg(params).then((res) => {
     deviceData.value = res.data;
     let node = res.data[0];
-    console.log(node);
     const chartInstance = echartComponent.value.getChartInstance();
     chartInstance.setOption(
       merge(option.value, {

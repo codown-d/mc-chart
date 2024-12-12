@@ -1,14 +1,12 @@
 <template>
-    <Pie :option="option" ref="echartComponent" />
+    <div class="relative" style="height: calc(100%)">
+        <Pie :option="option" ref="echartComponent" />
+    </div>
 </template>
 <script setup lang="ts">
 import { onMounted, defineProps, ref, nextTick, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { Select, SelectOption, Pagination, Popover } from "ant-design-vue";
 import Pie from "@/views/equipment-analysis/echarts/pie.vue";
 import API from "@/api";
-import { useDeviceInfo } from "@/hook/useDeviceInfo";
-import dayjs from "dayjs";
 import { merge } from "lodash";
 const echartComponent = ref(null);
 let option = ref({
@@ -59,26 +57,29 @@ const props = defineProps({
 watch(props, (newValue) => {
     getDeviceAV(newValue.device_info.Device_Name);
 });
-
 const getDeviceAV = (deviceName) => {
     var params = {
         deviceName,
-        dataType: "DeviceAV",
+        dataType: "DeviceXproportion",
         // timeFrom:  dayjs().subtract(60, 'day'),
         // timeEnd: dayjs(),
         timeFrom: "2013-01-02T23:59:59+08:00",
         timeEnd: "2013-03-02T00:00:00+08:00",
         output: [
             {
-                field: "PeriodRunTime",
+                field: "X_Value",
                 func: "sum",
             },
             {
-                field: "PeriodStopTime",
+                field: "leak",
                 func: "sum",
             },
             {
-                field: "PeriodOfflineTime",
+                field: "Inlet_O2",
+                func: "sum",
+            },
+            {
+                field: "Outlet_O2",
                 func: "sum",
             },
         ],
@@ -89,16 +90,15 @@ const getDeviceAV = (deviceName) => {
     API.getDataAgg(params).then((res) => {
         deviceData.value = res.data;
         let node = res.data[0];
-        console.log(node);
         const chartInstance = echartComponent.value.getChartInstance();
         chartInstance.setOption(
             merge(option.value, {
                 series: [
                     {
                         data: [
-                            { value: node.PeriodRunTime, name: "烟气进口氧量" },
-                            { value: node.PeriodStopTime, name: "烟气出口氧量" },
-                            { value: node.PeriodOfflineTime+50, name: "漏风率" },
+                            { value: node.Inlet_O2, name: "烟气进口氧量" },
+                            { value: node.Outlet_O2, name: "烟气出口氧量" },
+                            { value: node.X_Value + 50, name: "漏风率" },
                         ],
                     },
                 ],

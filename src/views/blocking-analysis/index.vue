@@ -18,7 +18,7 @@
         </div>
         <div class="flex flex-col flex-1 w-0">
           <div class="bg-white h-[50%] py-[20px] relative">
-            <pangge-Title text="阻力性能退化风险趋势" class="mb-[10px] absolute ml-5"></pangge-Title>
+            <pangge-Title text="堵灰风险因子趋势" class="mb-[10px] absolute ml-5"></pangge-Title>
             <RiskTrends />
           </div>
           <div class="bg-white h-0 flex-1 py-[20px] mt-[20px] relative">
@@ -32,13 +32,10 @@
 <script setup>
 import { onMounted, reactive, ref, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import * as echarts from "echarts";
 import ExpertAdvice from "./components/expert-advice.vue";
 import PreheaterGraph from "./components/preheater-graph.vue";
 import RiskTrends from "./components/risk-trends.vue";
 import FanOverview from "@/views/equipment-analysis/components/fan-overview.vue";
-import API from "@/api";
-import dayjs from "dayjs";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 
 const state = reactive({
