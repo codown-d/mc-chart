@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <img src="/images/fengji.jpg" />
+    <img src="/images/fengji.jpg" style="margin: 0 auto;"/>
     <div
       class="absolute top-[0px] w-full h-full flex justify-between"
       style="background: rgba(169, 181, 188, 0.08)"
