@@ -13,7 +13,8 @@ const state = reactive({
     nav: [
         { img: 'home-items-1.png', text: '离心风机', url: "/overview/0" },
         { img: 'home-items-2.png', text: '轴流风机', url: "/overview/1" },
-        { img: 'home-items-3.png', text: '鼓风机', url: "/overview/2" }
+        { img: 'home-items-3.png', text: '鼓风机', url: "/overview/2" },
+        { img: 'fengji.jpg', text: '预热器', url: "/overview2/2" }
     ]
 })
 
@@ -50,9 +51,9 @@ const handSetWebPath = (url) => {
         </div>
         <div class="container-content">
             <div class="container-content-blockRow">
-                <div class="container-content-blockRow-items" v-for="(items, index) in state.nav" :key="index">
+                <div class="container-content-blockRow-items mx-1" v-for="(items, index) in state.nav" :key="index">
                     <div class="container-content-blockRow-items-bg pointer">
-                        <img :src="`/images/${items.img}`" @click="handleAclick(items.url)"/>
+                        <img :src="`/images/${items.img}`" class="h-full" @click="handleAclick(items.url)"/>
                     </div>
                     <div class="container-content-blockRow-items-footer space-center">
                         <img class="pointer" src="/images/home-left.png" />
