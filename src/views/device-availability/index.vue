@@ -7,24 +7,18 @@
     </pangge-Header>
     <div class="w-full h-[81.6296%] flex flex-row absolute left-0 bottom-0 overflow-hidden">
       <div class="mb-[20px] flex-1 h-full bg-white ml-5 flex flex-col" style="height: calc(100% - 20px)">
-        <div class="px-5 py-[20px] h-[190px]">
-          <pangge-Title text="专家建议" class="mb-[10px]"></pangge-Title>
-          <div style="background: rgba(0, 135, 211, 0.06)" class="p-2 text-[#0087D3] text-[14px] font-bold">
-            元器件寿命受吹灰系统影响，当蒸汽压力大于8Pa，蒸汽温度小于300，会加剧换热元件损伤，请关注换热元器件效率图以及阻力性能退化趋势分析结果
-            <div v-for="item in values(dataInfo)" v-if="false">
-              <span>{{ item.name }}：<span>{{ item.value }}</span></span>
-            </div>
-          </div>
-        </div>
-        <div class="px-4 flex-1">
+        <div class="flex-1 p-4 pb-0 ">
           <pangge-Title text="设备可用性分析" class="mb-[10px]"></pangge-Title>
-          <div style="height: calc(50% - 32px);">
             <PredictiveMaintenance />
-          </div>
-          <div class="h-[50%]">
+        </div>
+        <div class="h-[30%] relative px-4">
+          <pangge-Title text="事件描述" class="mb-[10px] absolute "></pangge-Title>
             <PredictiveMaintenanceTime />
           </div>
-        </div>
+          <div class="h-[30%] relative px-4">
+            <pangge-Title text="事件描电流波动情况分析" class="mb-[10px] absolute "></pangge-Title>
+            <PredictiveAn />
+          </div>
       </div>
       <div class="h-full w-[40%] mx-5">
         <div class="h-[50%]  flex" style="height: calc(50% - 40px)">
@@ -55,6 +49,7 @@
 import { onMounted, reactive, ref, watch } from "vue";
 import PredictiveMaintenance from "./components/predictive-maintenance.vue";
 import PredictiveMaintenanceTime from "./components/predictive-maintenance-time.vue";
+import PredictiveAn from "./components/predictive-an.vue";
 import ScatterContour from "./components/scatter-contour.vue";
 import ScatterDusty from "./components/scatter-dusty.vue";
 import ThermalEfficiency from "./components/thermal-efficiency.vue";

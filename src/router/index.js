@@ -14,6 +14,7 @@ import Child from '@/views/child.vue'
 import Prediction from '@/views/prediction/index.vue'
 import BlockingAnalysis from '@/views/blocking-analysis/index.vue'
 import Preventive from '@/views/preventive/index.vue'
+import PerfectTemperature from '@/views/perfect-temperature/index.vue'
 import ComponentsPredictive from '@/views/components-predictive/index.vue'
 import Analysis from '@/views/analysis/index.vue'
 import Help from '@/views/help/index.vue'
@@ -95,6 +96,12 @@ const router = createRouter({
       path: '/prediction2/:deviceType',
       name: 'prediction2',
       component: BlockingAnalysis
+    },
+    
+    {
+      path: '/perfect-temperature/:deviceType',
+      name: 'perfect-temperature',
+      component: PerfectTemperature
     },
     {
       path: '/preventive/:deviceType',

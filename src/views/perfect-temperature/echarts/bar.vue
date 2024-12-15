@@ -1,13 +1,9 @@
 <template>
-  <div
-    class="chart"
-    :class="class"
-    ref="barChart"
-    style="height: 100%; width: 100%"
-  ></div>
+  <div class="chart" :class="class" ref="barChart" style="height: 100%; width: 100%"></div>
 </template>
 <script setup lang="ts">
 import { onMounted, defineExpose, ref, nextTick, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import * as echarts from "echarts";
 import { merge } from "lodash";
 const barChart = ref(null);
@@ -18,10 +14,10 @@ const props = defineProps({
     type: Object,
     default: {},
   },
-  class: {
+  class:{
     type: String,
     default: "",
-  },
+  }
 });
 let init = () => {
   if (!barChart.value) return;
@@ -31,13 +27,18 @@ let init = () => {
   }
   var option = {
     tooltip: {
-      trigger: "item",
-      formatter: "{a} <br/>{b} : {d}%", // 显示百分比
+        trigger: 'axis'
     },
+  grid: {
+    left: '10%',    // 10% of the container's width from the left side
+    right: '10%',   // 10% of the container's width from the right side
+    top: '20%',     // 20% of the container's height from the top
+    bottom: '20%'   // 15% of the container's height from the bottom
+  },
     legend: {
       bottom: "0%",
       left: "center",
-      icon: "circle",
+      icon: 'circle', 
     },
     series: [],
   };
@@ -51,13 +52,14 @@ watch(
   },
   { deep: true }
 );
+nextTick(() => {
+  init();
+});
+
 defineExpose({
   getChartInstance() {
     return myChart.value;
   },
-});
-nextTick(() => {
-  init();
 });
 onMounted(() => {
   window.addEventListener("resize", () => {

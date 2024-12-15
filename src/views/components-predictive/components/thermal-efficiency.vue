@@ -52,7 +52,7 @@ let option = ref({
       { offset: 0, color: "rgba(0, 128, 0, 0.1)" }, // 渐变结束色
     ]),
     borderWidth: 0,
-    left: "10%",
+    left: "4%",
     right: "6%",
     top: "15%",
     bottom: "12%",
@@ -99,12 +99,12 @@ const getDeviceAV = (deviceName) => {
     timeEnd: "2013-04-02T00:00:00+08:00",
   };
   API.getData(params).then((res) => {
+    console.log(res)
     const chartInstance = echartComponent.value.getChartInstance();
     let data = res.data;
     let last = data.at(-1)
     let startT = dayjs(data[0].timestamp).valueOf();
     let endT = dayjs(last.timestamp).add(0, "day").valueOf();
-    console.log(last)
     chartInstance.setOption(
       merge({}, option.value, {
         xAxis: [
@@ -113,24 +113,24 @@ const getDeviceAV = (deviceName) => {
             max: endT,
           },
         ],
-        yAxis: [{
-          max: last.threshold*1.2
-        }],
+        // yAxis: [{
+        //   max: last.threshold*1.2
+        // }],
         series: [
           {
-            name: "换热效率趋势",
+            name: "阻力性能",
+            type: "line",
+            symbol: "none",
+            data: data.map(item=>{
+              return [dayjs(item.timestamp).valueOf(),item.differ_gas_press]
+            }),
+          },
+          {
+            name: "清理积灰",
             type: "line",
             symbol: "none",
             data: data.map(item=>{
               return [dayjs(item.timestamp).valueOf(),item.trendvalue]
-            }),
-          },
-          {
-            name: "阈值线",
-            type: "line",
-            symbol: "none",
-            data: data.map(item=>{
-              return [dayjs(item.timestamp).valueOf(),item.threshold]
             }),
           },
         ],

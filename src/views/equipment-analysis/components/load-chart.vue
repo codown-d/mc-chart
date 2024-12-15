@@ -14,6 +14,7 @@ const echartComponent = ref(null);
 let option = ref({
   color: ["rgb(145,204,117)", "#ef9977", "#bababa"],
   title: {
+    show:false,
     text: "满负荷运行时间占比",
     left: "center",
     textStyle: {

@@ -1,10 +1,21 @@
 <template>
   <div
-    class="chart"
-    :class="class"
-    ref="barChart"
-    style="height: 100%; width: 100%"
-  ></div>
+    class="relative w-full h-full overflow-hidden"
+    style="perspective: 150px"
+  >
+    <img
+      src="/images/bw-bj.jpg"
+      alt=""
+      class="absolute w-full h-full top-0 left-0"
+    />
+    <div
+      class="chart w-full h-full"
+      id="myCanvas"
+      :class="class"
+      ref="barChart"
+      style=" transform:translate(0.5px, 0.5px) rotateX(45deg) rotateY(45deg) scale(0.3,0.3) skew(10deg,10deg)"
+    ></div>
+  </div>
 </template>
 <script setup lang="ts">
 import { onMounted, defineExpose, ref, nextTick, watch } from "vue";

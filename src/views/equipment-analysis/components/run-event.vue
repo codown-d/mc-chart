@@ -3,15 +3,15 @@
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import Bar from "../echarts/bar.vue";
-import { Select, SelectOption, Pagination, Popover } from "ant-design-vue";
 import API from "@/api";
-import dayjs from "dayjs";
 import { merge, keys } from "lodash";
+import { countBy } from "lodash";
+import { useCulPercent } from "@/utils";
 const echartComponent = ref(null);
 let option = ref({
   title: {
+    show: false,
     text: "运行事件",
     left: "center",
     textStyle: {
@@ -22,11 +22,20 @@ let option = ref({
     {
       type: "category",
       data: [],
+      axisLabel: {
+        interval: 0, // 强制显示所有标签
+      },
     },
   ],
   yAxis: [
     {
       type: "value",
+      axisLabel: {
+        formatter: "{value} %",
+      },
+      axisLine: {
+        show: false, // 确保显示刻度
+      },
     },
   ],
   series: [],
@@ -41,45 +50,56 @@ watch(props, (newValue) => {
   getDeviceAV(newValue.device_info.Device_Name);
 });
 
-const getDeviceAV = (deviceName) => {
+let culPercent = (data) => {
+  const totalCount = data.length;
+  const categoryCount = countBy(data, "percent");
+  return keys(categoryCount).map((count) => ({
+    percent: count,
+    percentage: ((categoryCount[count] / totalCount) * 100).toFixed(2),
+  }));
+};
+const getDeviceAV = async (deviceName) => {
   var params = {
     deviceName,
-    datetime: "2024-08-16T00:00:00+08:00",
+    dataType: "DeviceData",
+    output: "unitLoad",
+    timeFrom: "2013-01-02T23:59:59+08:00",
+    timeEnd: "2013-03-02T00:00:00+08:00",
   };
-  API.getAlarmCountC(params).then((res) => {
-    let node = res.data?.[0] || { alarmCount: 0, faultCount: 0 };
-    const chartInstance = echartComponent.value.getChartInstance();
-    chartInstance.setOption(
-      merge(option.value, {
-        xAxis: [
-          {
-            type: "category",
-            data: ["告警", "故障"],
+  let res = await API.getData(params);
+  let result = useCulPercent(res.data);
+  const chartInstance = echartComponent.value.getChartInstance();
+  chartInstance.setOption(
+    merge(option.value, {
+      xAxis: [
+        {
+          type: "category",
+          data: result.map((item) => {
+            return item.percent;
+          }),
+        },
+      ],
+      series: [
+        {
+          type: "bar",
+          data: result.map((item) => {
+            return item.percentage;
+          }),
+          showBackground: true,
+          barWidth: "20px",
+          label: {
+            show: true, // 显示标签
+            position: "top", // 标签位置，可以是 'top', 'inside', 'bottom', 等
+            fontSize: 12, // 标签字体大小
+            color: "#333", // 标签字体颜色
+            formatter: function (params) {
+              return ` ${params.value}%`; // 自定义显示格式
+            },
           },
-        ],
-        series: [
-          {
-            type: "bar",
-            data: [
-              {
-                value: node.alarmCount,
-                itemStyle: {
-                  color: "#dbcf60",
-                },
-              },
-              {
-                value: node.faultCount,
-                itemStyle: {
-                  color: "#df8a57",
-                },
-              },
-            ],
-            barWidth: 20,
-          },
-        ],
-      })
-    );
-  });
+        },
+      ],
+    })
+  );
 };
 onMounted(() => {
   getDeviceAV(props.device_info.Device_Name);

@@ -1,8 +1,8 @@
 <template>
-  <div class="relative">
+  <div class="relative ml-3">
     <pangge-Title text="专家建议" class="mb-[10px]"></pangge-Title>
     <div style="background: rgba(0, 135, 211, 0.06)" class="p-2 text-[#0087D3] text-[14px] font-bold">
-      换热器阻力性能降低，有堵灰趋势请及时安排换热器检修
+      文字内容更新
     </div>
   </div>
 </template>

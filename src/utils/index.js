@@ -1,3 +1,5 @@
+
+import { countBy,merge, keys } from "lodash";
 export function sampleByPercentage(start, end, percentages) {
   // 确保输入是有效的数字区间
   if (start >= end) {
@@ -76,3 +78,29 @@ export  function generateRandomPoints(startTime, endTime, numPoints) {
 
   return data;
 }
+
+export  const useCulPercent=(data) => {
+  let arr = data.map((item) => {
+    let percent;
+    if (item.unitLoad / 6 > 100) {
+      percent = "超额负荷";
+    } else if (item.unitLoad / 6 > 90) {
+      percent = "90%-100%";
+    } else if (item.unitLoad / 6 > 75) {
+      percent = "75%-90%";
+    } else if (item.unitLoad / 6 > 50) {
+      percent = "50%-75%";
+    } else {
+      percent = "小于50%";
+    }
+    return { percent };
+  });
+  const totalCount = arr.length;
+  const categoryCount = countBy(arr, "percent");
+  return keys(categoryCount).map((count) => ({
+    percent: count,
+    percentage: ((categoryCount[count] / totalCount) * 100).toFixed(2),
+    name: count,
+    value:Number(((categoryCount[count] / totalCount) * 100).toFixed(2))
+  }));
+};

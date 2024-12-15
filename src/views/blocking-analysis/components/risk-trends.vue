@@ -29,9 +29,9 @@ const echartComponentBar = ref(null);
 //趋势参考线心目一点颜色
 let valueLine = ref();
 let option = ref({
-  color:['#5470c6', 'rgba(255, 255, 0, 0.7)', ],
+  color: ["#5470c6", "rgba(255, 255, 0, 0.7)"],
   title: {
-    show:false,
+    show: false,
     text: "阻力性能退化风险趋势",
     left: "8%",
     textStyle: {
@@ -47,11 +47,33 @@ let option = ref({
       { offset: 1, color: "rgba(0, 128, 0, 0.7)" }, // 渐变结束色
     ]),
     borderWidth: 0,
-    left: "8%",
+    left: "160px",
     right: "6%",
     top: "12%",
     bottom: "20%",
   },
+  legend: [
+  {
+      left: "1%", // 将图例放在左侧
+      top: "50px",
+      orient: "vertical", // 设置图例垂直排列
+      icon: "rect", // 使用矩形代替默认图标
+      itemWidth: 20, // 横线的宽度
+      itemHeight: 2, // 横线的高度
+      data: ["堵灰趋势", "趋势参考线"],
+    },
+    {
+      left: "1%", // 将图例放在左侧
+      top: "90px",
+      orient: "vertical", // 设置图例垂直排列
+      icon: "rect", // 使用矩形代替默认图标
+      itemWidth: 20, // 横线的宽度
+      itemHeight: 10, // 横线的高度
+      data: ["性能正常", "告警基准线", "堵灰风险"],
+      selectedMode: false, //
+    },
+    
+  ],
   xAxis: [
     {
       type: "category",
@@ -62,8 +84,11 @@ let option = ref({
   ],
   yAxis: [
     {
-      // name: "yAxis-name",
+      // name: "堵灰风险趋势",
       type: "value",
+      axisLabel: {
+        show: false, // 隐藏刻度文字
+      },
       splitLine: {
         show: false, // 设置为 false，隐藏横向网格线
       },
@@ -81,7 +106,7 @@ let optionBar = ref({
     show: false,
   },
   grid: {
-    left: "8%", // 10% of the container's width from the left side
+    left: "160px", // 10% of the container's width from the left side
     right: "6%", // 10% of the container's width from the right side
     top: "1%", // 20% of the container's height from the top
     bottom: "0%", // 15% of the container's height from the bottom
@@ -129,6 +154,35 @@ const getDeviceAV = (deviceName) => {
             data: res.data.map((item) => {
               return item.RMSE;
             }),
+          },
+          {
+            name: '性能正常',
+            data: [],
+            type: 'line',  // 或者其他类型，随意设置
+            silent: true, // 使得此系列不显示实际图形
+            itemStyle: {
+              color: '#09ae3a',  // 设置 Bar Group 1 的颜色
+            },
+          },
+
+          {
+            name: '告警基准线',
+            data: [],
+            type: 'line',  // 或者其他类型，随意设置
+            silent: true, // 使得此系列不显示实际图形
+            itemStyle: {
+              color: '#ffed00',  // 设置 Bar Group 1 的颜色
+            },
+          },
+
+          {
+            name: '堵灰风险',
+            data: [],
+            type: 'line',  // 或者其他类型，随意设置
+            silent: true, // 使得此系列不显示实际图形
+            itemStyle: {
+              color: '#ab0404',  // 设置 Bar Group 1 的颜色
+            },
           },
         ],
       })

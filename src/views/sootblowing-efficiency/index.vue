@@ -7,8 +7,10 @@
     </pangge-Header>
     <div class="w-full h-[81.6296%] flex flex-row absolute left-0 bottom-0 overflow-hidden">
       <div class="mb-[20px] flex-1 h-full bg-white ml-5 flex flex-col" style="height: calc(100% - 20px)">
-        <div class="px-5 py-[20px] h-[190px]">
-          <pangge-Title text="专家建议" class="mb-[10px]"></pangge-Title>
+        <div class="px-5 py-[20px] h-[50%]">
+          <ScatterContour/>
+        </div>
+        <div class="px-5 py-[20px] flex-1 mt-4">
           <ScatterContour/>
         </div>
       </div>

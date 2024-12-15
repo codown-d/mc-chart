@@ -1,141 +1,125 @@
 <template>
-    <div class="relative" style="height: calc(100%)">
-        <div class="absolute z-10 right-6 text-[14px]">
-            设备：<a-select v-model:value="valueLine" :size="'small'" style="width: 80px"
-                :options="deviceInfoOp"></a-select>
-            参数：<a-select v-model:value="valueLinePm" mode="multiple" :maxTagTextLength="10" :maxTagCount="3"
-                :size="'small'" placeholder="请选择参数" style="width: 260px" :options="optionsPm"></a-select>
-        </div>
-        <Line :option="option" ref="echartComponent" />
+  <div class="relative" style="height: calc(100%)">
+    <div class="absolute z-10 right-6 text-[14px]" v-if="false">
+      设备：<a-select
+        v-model:value="valueLine"
+        :size="'small'"
+        style="width: 80px"
+        :options="deviceInfoOp"
+      ></a-select>
     </div>
+    <Line :option="option" ref="echartComponent" />
+  </div>
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Line from "@/views/blocking-analysis/echarts/line.vue";
 import API from "@/api";
-import { merge, find } from "lodash";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import dayjs from "dayjs";
 const echartComponent = ref(null);
 let valueLine = ref();
-let valueLinePm = ref(["Aar", "CCET_Value"]);
-/**
- * 
- * 
- * Aar
-CCET_Value
-Convscr
-Date
-Device_Name
-Qetar
-Sar
- */
 let optionsPm = ref([
-    {
-        label: "Aar",
-        value: "Aar",
-    },
-    {
-        label: "CCET_Value",
-        value: "CCET_Value",
-    },
-    {
-        label: "Convscr",
-        value: "Convscr",
-    },
-    {
-        label: "Qetar",
-        value: "Qetar",
-    },
+  {
+    label: "煤基灰分",
+    value: "Aar",
+  },
+  {
+    label: "烟气含氧量",
+    value: "O2",
+  },
+  {
+    label: "转化率 ",
+    value: "Convscr",
+  },
+  {
+    label: "煤基地位发热量",
+    value: "Qetar",
+  },
 
-    {
-        label: "Sar",
-        value: "Sar",
-    },
+  {
+    label: "煤基硫分",
+    value: "Sar",
+  },
 ]);
 let option = ref({
-    title: {
-        show: false,
-        text: "预热器关键参数趋势",
-        left: "7%",
+  title: {
+    show: false,
+    text: "预热器关键参数趋势",
+    left: "7%",
+  },
+  grid: {
+    left: "8%",
+    right: "6%",
+    top: "20%",
+    bottom: "20%",
+  },
+  legend: {
+    bottom: "0%",
+    left: "center",
+    icon: "circle",
+    z: 99,
+  },
+  dataZoom: [
+    {
+      type: "slider",
+      start: 80,
+      end: 100,
     },
-    grid: {
-        left: "8%",
-        right: "6%",
-        top: "20%",
-        bottom: "20%",
+  ],
+  xAxis: [
+    {
+      type: "time",
     },
-    legend: {
-        bottom: "0%",
-        left: "center",
-        icon: "circle",
-        z: 99,
-    },
-    dataZoom: [
-        {
-            type: "slider",
-            start: 80,
-            end: 100,
-        },
-    ],
-    xAxis: [
-        {
-            type: "time",
-        },
-    ],
+  ],
 
-    yAxis: [
-        {
-            type: "value",
-            splitArea: {
-                show: true
-            }
-        },
-    ],
-    series: [],
+  yAxis: [
+    {
+      type: "value",
+      splitArea: {
+        show: true,
+      },
+    },
+  ],
+  series: [],
 });
 
 let { deviceInfoOp } = useDeviceInfo();
 watch(deviceInfoOp, (data) => {
-    valueLine.value = data[0].value;
+  valueLine.value = data[0].value;
 });
 const getDeviceAV = () => {
-    var params = {
-        deviceName: valueLine.value,
-        dataType: "DeviceCCET",
-        output: valueLinePm.value.join(","),
-        timeFrom: "2013-01-02T23:59:59+08:00",
-        timeEnd: "2013-03-02T00:00:00+08:00",
-    };
-    API.getData(params).then((res) => {
-        const chartInstance = echartComponent.value.setChartInit();
-        let opt = Object.assign({}, option.value, {
-            xAxis: [
-                {
-                    min: dayjs(params.timeFrom).valueOf(),
-                    max: dayjs(params.timeEnd).valueOf(),
-                },
-            ],
-            series: valueLinePm.value.map((item) => {
-                let label =
-                    find(optionsPm.value, (ite) => ite.value === item)?.label || item;
-                return {
-                    name: label,
-                    type: "line",
-                    symbol: "none",
-                    data: res.data.map((ite) => {
-                        return [dayjs(ite.Date).valueOf(), ite[item]];
-                    }),
-                };
-            }),
-        });
-        chartInstance.setOption(opt);
+  var params = {
+    deviceName: valueLine.value,
+    dataType: "DeviceCCET",
+    output: optionsPm.value.map((item) => item.value).join(","),
+    timeFrom: "2013-01-02T23:59:59+08:00",
+    timeEnd: "2013-03-02T00:00:00+08:00",
+  };
+  API.getData(params).then((res) => {
+    const chartInstance = echartComponent.value.setChartInit();
+    let opt = Object.assign({}, option.value, {
+      xAxis: [
+        {
+          min: dayjs(params.timeFrom).valueOf(),
+          max: dayjs(params.timeEnd).valueOf(),
+        },
+      ],
+      series: optionsPm.value.map((item) => {
+        return {
+          name: item.label,
+          type: "line",
+          symbol: "none",
+          data: res.data.map((ite) => {
+            return [dayjs(ite.Date).valueOf(), ite[item.value]];
+          }),
+        };
+      }),
     });
+    chartInstance.setOption(opt);
+  });
 };
 watch(valueLine, (data) => {
-    getDeviceAV();
-});
-watch(valueLinePm, (data) => {
-    getDeviceAV();
+  getDeviceAV();
 });
 </script>

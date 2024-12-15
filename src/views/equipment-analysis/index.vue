@@ -2,123 +2,141 @@
   <div class="h-[100vh] w-full">
     <pangge-Header :timeShow="true" :back="true" :navigation="false">
       <template v-slot:header-block>
-        <div class="text-[#fff] text-[40px]">设备可靠性分析</div>
+        <div class="text-[#fff] text-[40px]">预热器概述</div>
       </template>
     </pangge-Header>
-    <div class="flex h-[80vh] w-full absolute left-0 bottom-0">
+    <div class="h-[80vh] w-full absolute left-0 bottom-0 overflow-auto">
       <template v-for="item in deviceDataList">
         <div
           style="border-top: 6px solid #4dbfff"
-          class="w-full ml-5 mr-[10px] mb-5 overflow-auto border-t-6 p-4 bg-white"
+          class="flex ml-5 mr-[10px] border-t-6 p-4 bg-white"
         >
-          <div class="flex items-center justify-between">
-            <div class="flex items-center text-[26px] font-bold">
-              <img src="/images/device-icon.png" class="w-10" />{{
-                item.Device_Name
-              }}
+          <div class="w-[50%]">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center text-[26px] font-bold">
+                <img src="/images/device-icon.png" class="w-10" />{{
+                  item.Device_Name
+                }}
+              </div>
+              <div
+                :style="`background-color: ${objState[item.state]?.style.bg};
+              border-color: ${objState[item.state]?.style.border};`"
+                class="flex items-center py-[14px] px-[11px] rounded-[50px] h-[50px] border border-solid"
+              >
+                <div
+                  class="w-4 h-4 rounded-full"
+                  :style="`background-color: ${
+                    objState[item.state]?.style.bgCr
+                  };`"
+                ></div>
+                <div class="ml-2">当前运行状态：</div>
+                <div
+                  class="text-[#15b79a] font-bold"
+                  :style="`color: ${objState[item.state]?.style.textColor};`"
+                >
+                  {{ objState[item.state]?.label }}
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 flex text-[16px] mt-[14px]">
+              <div class="mr-[60px]">
+                <span class="item-tag mr-5">出厂时间</span>
+                {{ $filters.formatDate(item.Start_Day, "YYYY-MM-DD") }}
+              </div>
+              <div>
+                <span class="item-tag mr-5">投入运营时间</span>
+                {{ $filters.formatDate(item.Active_Day, "YYYY-MM-DD") }}
+              </div>
+            </div>
+            <a-divider style="border-color: #c6d3d8" dashed />
+            <div
+              style="height: 200px; width: 100%"
+              class="flex justify-around items-center"
+            >
+              <div style="width: 50%; height: 100%" class="relative">
+                <pangge-Title
+                  text="预热器运行时间占比"
+                  class="mb-[10px] absolute"
+                ></pangge-Title>
+                <LoadChart :device_info="item" />
+              </div>
+              <div style="width: 50%; height: 100%" class="relative">
+                <pangge-Title
+                  text="不同负荷的运行时间占比"
+                  class="mb-[10px] absolute"
+                ></pangge-Title>
+                <RunEvent :device_info="item" />
+              </div>
+            </div>
+            <div class="mt-[20px]" style="height: 380px">
+              <FanOverview :device_info="item" />
             </div>
             <div
-              :style="`background-color: ${objState[item.state]?.style.bg};
-              border-color: ${objState[item.state]?.style.border};`"
-              class="flex items-center py-[14px] px-[11px] rounded-[50px] h-[50px] border border-solid"
+              class="flex h-[64px] items-center justify-between"
+              style="background: rgba(134, 189, 220, 0.1)"
             >
-              <div
-                class="w-4 h-4 rounded-full"
-                :style="`background-color: ${
-                  objState[item.state]?.style.bgCr
-                };`"
-              ></div>
-              <div class="ml-2">当前运行状态：</div>
-              <div class="text-[#15b79a] font-bold" :style="`color: ${
-                  objState[item.state]?.style.textColor
-                };`">
-                {{ objState[item.state]?.label }}
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 flex text-[16px] mt-[14px]">
-            <div class="mr-[60px]">
-              <span class="item-tag mr-5">出厂时间</span>
-              {{ $filters.formatDate(item.Start_Day, "YYYY-MM-DD") }}
-            </div>
-            <div>
-              <span class="item-tag mr-5">投入运营时间</span>
-              {{ $filters.formatDate(item.Active_Day, "YYYY-MM-DD") }}
-            </div>
-          </div>
-          <a-divider style="border-color: #c6d3d8" dashed />
-          <div
-            style="height: 200px; width: 100%"
-            class="flex justify-around items-center"
-          >
-            <LoadChart :device_info="item" />
-            <RunEvent :device_info="item" />
-          </div>
-          <div class="mt-[20px]">
-            <FanOverview :device_info="item" />
-          </div>
-          <div
-            class="flex h-[84px] items-center justify-between"
-            style="background: rgba(134, 189, 220, 0.1)"
-          >
-            <template v-for="item in actionList">
-              <div
-                class="flex flex-col items-center justify-center flex-1 cursor-pointer"
-                @click="handleAclick('/prediction/' + state.deviceType)"
-              >
-                <img
-                  :src="`/images/${item.icon}`"
-                  alt=""
-                  class="w-[22px] mb-2"
-                />
-                <div class="text-[14px] text-[#0087d3]">
-                  {{ item.title }}
-                </div>
-              </div>
-              <a-divider
-                style="border-color: #c6d3d8; height: 30px"
-                type="vertical"
-              />
-            </template>
-            <div class="flex-1">
-              <Popover :title="null">
-                <template #content>
-                  <p
-                    style="cursor: pointer"
-                    @click="handleAclick('/equipment/' + state.deviceType)"
-                  >
-                    设备概述
-                  </p>
-                  <p
-                    style="cursor: pointer"
-                    @click="handleAclick('/availability/' + state.deviceType)"
-                  >
-                    可用性分析
-                  </p>
-                  <p
-                    style="cursor: pointer"
-                    @click="handleAclick('/energy/' + state.deviceType)"
-                  >
-                    能耗分析
-                  </p>
-                  <p
-                    style="cursor: pointer"
-                    @click="handleAclick('/analysis/' + state.deviceType)"
-                  >
-                    报告汇总
-                  </p>
-                  <p style="cursor: pointer" @click="handleAclick('/help')">
-                    帮助
-                  </p>
-                </template>
+              <template v-for="item in actionList">
                 <div
                   class="flex flex-col items-center justify-center flex-1 cursor-pointer"
+                  @click="handleAclick('/prediction/' + state.deviceType)"
                 >
-                  <img src="/images/f4.png" class="w-[22px] mb-2" />
-                  <div class="text-[14px] text-[#0087d3]">更多</div>
+                  <img
+                    :src="`/images/${item.icon}`"
+                    alt=""
+                    class="w-[22px] mb-2"
+                  />
+                  <div class="text-[14px] text-[#0087d3]">
+                    {{ item.title }}
+                  </div>
                 </div>
-              </Popover>
+                <a-divider
+                  style="border-color: #c6d3d8; height: 30px"
+                  type="vertical"
+                />
+              </template>
+              <div class="flex-1">
+                <Popover :title="null">
+                  <template #content>
+                    <p
+                      style="cursor: pointer"
+                      @click="handleAclick('/equipment/' + state.deviceType)"
+                    >
+                      设备概述
+                    </p>
+                    <p
+                      style="cursor: pointer"
+                      @click="handleAclick('/availability/' + state.deviceType)"
+                    >
+                      可用性分析
+                    </p>
+                    <p
+                      style="cursor: pointer"
+                      @click="handleAclick('/energy/' + state.deviceType)"
+                    >
+                      能耗分析
+                    </p>
+                    <p
+                      style="cursor: pointer"
+                      @click="handleAclick('/analysis/' + state.deviceType)"
+                    >
+                      报告汇总
+                    </p>
+                    <p style="cursor: pointer" @click="handleAclick('/help')">
+                      帮助
+                    </p>
+                  </template>
+                  <div
+                    class="flex flex-col items-center justify-center flex-1 cursor-pointer"
+                  >
+                    <img src="/images/f4.png" class="w-[22px] mb-2" />
+                    <div class="text-[14px] text-[#0087d3]">更多</div>
+                  </div>
+                </Popover>
+              </div>
             </div>
+          </div>
+          <div class="flex-1 flex">
+            <Charts />
           </div>
         </div>
       </template>
@@ -130,8 +148,9 @@ import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import LoadChart from "./components/load-chart.vue";
 import RunEvent from "./components/run-event.vue";
+import Charts from "./components/charts.vue";
 import FanOverview from "./components/fan-overview.vue";
-import { Select, SelectOption, Pagination, Popover } from "ant-design-vue";
+import { Popover } from "ant-design-vue";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import API from "@/api";
 import { merge } from "lodash";
@@ -181,7 +200,7 @@ let objState = {
     style: {
       textColor: "rgba(236,156,156, 1)",
       bgCr: "rgba(236,156,156, 0.3)",
-      border:"rgba(236,156,156, 1)",
+      border: "rgba(236,156,156, 1)",
       bg: "rgba(236,156,156, 0.1)",
     },
   },
@@ -190,7 +209,7 @@ let objState = {
     style: {
       textColor: "rgba(160,160,160, 1)",
       bgCr: "rgba(160,160,160, 0.3)",
-      border:"rgba(160,160,160, 1)",
+      border: "rgba(160,160,160, 1)",
       bg: "rgba(160,160,160, 0.1)",
     },
   },
@@ -210,13 +229,17 @@ const getDeviceAV = async (deviceName) => {
   return {
     deviceName,
     state: res.data.length == 0 ? "3" : node.unitLoad > 100 ? "1" : "2",
+    percent100: node.unitLoad > 600 ? 1 : 0,
+    percent90: res.data.length == 0 ? "3" : node.unitLoad > 100 ? "1" : "2",
+    percent75: res.data.length == 0 ? "3" : node.unitLoad > 100 ? "1" : "2",
+    percent50: res.data.length == 0 ? "3" : node.unitLoad > 100 ? "1" : "2",
+    percent50: res.data.length == 0 ? "3" : node.unitLoad > 100 ? "1" : "2",
   };
 };
 watch(deviceInfoList, (newValue) => {
   Promise.all(newValue.map((item) => getDeviceAV(item.Device_Name))).then(
     (res) => {
       deviceDataList.value = merge([], newValue, res);
-      console.log(deviceDataList.value);
     }
   );
 });
