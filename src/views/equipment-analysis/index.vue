@@ -78,7 +78,7 @@
               <template v-for="item in actionList">
                 <div
                   class="flex flex-col items-center justify-center flex-1 cursor-pointer"
-                  @click="handleAclick('/prediction/' + state.deviceType)"
+                  @click="handleAclick(item.path)"
                 >
                   <img
                     :src="`/images/${item.icon}`"
@@ -99,15 +99,9 @@
                   <template #content>
                     <p
                       style="cursor: pointer"
-                      @click="handleAclick('/equipment/' + state.deviceType)"
+                      @click="handleAclick(`/perfect-temperature/2`)"
                     >
-                      设备概述
-                    </p>
-                    <p
-                      style="cursor: pointer"
-                      @click="handleAclick('/availability/' + state.deviceType)"
-                    >
-                      可用性分析
+                    壁温趋势分析
                     </p>
                     <p
                       style="cursor: pointer"
@@ -161,23 +155,20 @@ const state = reactive({
 });
 let actionList = ref([
   {
-    title: "振动分析与异常检测",
+    title: "阻力性能与堵灰分析",
     icon: "f1.png",
-    path: "/vibration",
+    path: "/prediction2/2",
   },
   {
-    title:
-      state.deviceType == "0" || state.deviceType === "1"
-        ? "失速预测与分析"
-        : "喘振预测与分析",
+    title:"换热元件预测性维护与分析",
     icon: "f2.png",
-    path: "/prediction",
+    path: "/preventive2/2",
   },
 
   {
-    title: "预防性维护",
+    title: "设备可用性分析",
     icon: "f3.png",
-    path: "/preventive",
+    path: "/availability2/2",
   },
 ]);
 

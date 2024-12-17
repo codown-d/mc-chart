@@ -52,11 +52,6 @@ const router = createRouter({
       name: 'vibration',
       component: Vibration
     },
-    {
-      path: '/vibration2/:deviceType',
-      name: 'vibration2',
-      component: SootblowingEfficiency
-    },
 
     {
       path: '/availability/:deviceType',

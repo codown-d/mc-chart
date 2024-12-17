@@ -21,6 +21,10 @@ const echartComponent = ref(null);
 let valueLine = ref();
 let optionsPm = ref([
   {
+    label: "CCET_Value",
+    value: "CCET_Value",
+  },
+  {
     label: "煤基灰分",
     value: "Aar",
   },

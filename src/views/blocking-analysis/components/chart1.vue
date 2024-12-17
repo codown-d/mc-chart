@@ -99,8 +99,9 @@ let option = ref({
 const getDeviceAV = () => {
   var params = {
     dataType: "DeviceFeature",
-    timeFrom: "2013-01-02T23:59:59+08:00",
-    timeEnd: "2013-03-02T00:00:00+08:00",
+    // output: optionsPm.value.map((item) => item.value).join(","),
+    timeFrom: "2012-02-10T23:59:59+08:00",//DeviceInfo 表 Clean_down_time
+    timeEnd: "2024-12-11T00:00:00+08:00",
   };
   API.getData(params).then((res) => {
     const chartInstance = echartComponent.value.getChartInstance();

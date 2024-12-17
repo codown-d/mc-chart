@@ -59,7 +59,7 @@ let option = ref({
       icon: "rect", // 使用矩形代替默认图标
       itemWidth: 20, // 横线的宽度
       itemHeight: 10, // 横线的高度
-      data: ["正常区间", "告警区间", "危险区间"],
+      data: ["预防性周期时间", "告警区间", "危险区间"],
       selectedMode: false, //
     },
   ],
@@ -125,7 +125,7 @@ const getDeviceAV = (deviceName) => {
     let startT = dayjs(data[0].timestamp).valueOf();
     let endT = dayjs(last.Predictendtime).valueOf();
     let endedT = dayjs(last.Max_date).valueOf();
-    let samples = sampleByPercentage(startT, endT, [10, 30]);
+    let samples = sampleByPercentage(startT, endT, [75, 15]);
     console.log(samples);
     let midT = dayjs((startT + endT) / 2).valueOf();
     chartInstance.setOption(

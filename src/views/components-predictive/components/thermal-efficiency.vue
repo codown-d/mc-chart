@@ -57,23 +57,23 @@ let option = ref({
     top: "15%",
     bottom: "12%",
   },
-  visualMap: [
-    {
-      show: true,
-      type: "continuous",
-      seriesIndex: 0,
-      min: 0,
-      max: 200,
-      inRange: {
-        color: ["#ff0", "#f00"], // 设定范围内的颜色
-      },
-      outOfRange: {
-        color: ["#000"], // 超出范围的颜色
-      },
-      left: 'right',  // 水平居中
-      top: 'center',      // 垂直居上
-    },
-  ],
+  // visualMap: [
+  //   {
+  //     show: true,
+  //     type: "continuous",
+  //     seriesIndex: 0,
+  //     min: 0,
+  //     max: 200,
+  //     inRange: {
+  //       color: ["#ff0", "#f00"], // 设定范围内的颜色
+  //     },
+  //     outOfRange: {
+  //       color: ["#000"], // 超出范围的颜色
+  //     },
+  //     left: 'right',  // 水平居中
+  //     top: 'center',      // 垂直居上
+  //   },
+  // ],
   xAxis: [
     {show:false,
       type: "time",
@@ -95,8 +95,10 @@ const getDeviceAV = (deviceName) => {
     dataType: "DeviceHotefficiencyLSTM",
     // timeFrom:  dayjs().subtract(60, 'day'),
     // timeEnd: dayjs(),
-    timeFrom: "2013-02-01T20:55:00+08:00",
-    timeEnd: "2013-04-02T00:00:00+08:00",
+    timeFrom: "2012-02-10T20:55:00+08:00",
+    timeEnd: "2024-12-11T00:00:00+08:00",
+
+    //添加DeviceInfo 表里面 Clean_down_time 时间匹配上显示竖线显示；abel: 吹灰系统工作
   };
   API.getData(params).then((res) => {
     console.log(res)
