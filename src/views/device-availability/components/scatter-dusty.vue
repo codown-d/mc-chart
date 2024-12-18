@@ -3,7 +3,7 @@
     <div  class="w-[55%]">
       <Gauge :option="option" ref="echartComponent" />
     </div>
-    <div class="flex-1 mt-8" v-if="dataInfo">
+    <div class="flex-1 mb-8 flex items-left flex-col justify-center" v-if="dataInfo">
       <div v-for="item in item" class="text-[18px]">
         {{ item.name }}：{{ dataInfo[item.type].toFixed(2) }}
       </div>

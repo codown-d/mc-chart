@@ -1,5 +1,5 @@
 <template>
-  <div class="relative" style="height: calc(100%)">
+  <div class="relative" style="height: calc(100% - 20px)">
     <Pie :option="option" ref="echartComponent" />
   </div>
 </template>
@@ -15,11 +15,11 @@ let option = ref({
     show: false,
   },
   legend: {
-    show: false,
     hoverLink: false,
   },
   grid: {
     top: "4%", // 20% of the container's height from the top
+    bottom: "10%",
   },
   series: [],
 });
@@ -58,7 +58,7 @@ const getDeviceAV = async (deviceName) => {
             };
           }),
           label: {
-            show: true,
+            show: false,
             formatter: "{c}%", // 显示数据值
           },
         },

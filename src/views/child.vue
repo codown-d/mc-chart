@@ -226,13 +226,13 @@ const handEchartsQue3D = () => {
 
 const LayoutEquLefDom = () => {
   var params = {
-    dataType: "DeviceData",
-    timeFrom: "2024-08-01T00:00:00+08:00",
-    timeEnd: "2024-08-31T00:00:00+08:00",
+    dataType: "DeviceAV",
+    timeFrom: "2024-07-01T00:00:00+08:00",
+    timeEnd: "2024-08-21T00:00:00+08:00",
     output: [
       {
         field: "Outlet_Differential_Pressure",
-        func: "avg",
+        func: "sum",
       },
     ],
     group: {

@@ -28,47 +28,47 @@ const state = reactive({
   deviceType: route.params.deviceType,
   navigation: [
     {
-      title: "振动分析与异常检测",
-      url: "/vibration/" + route.params.deviceType,
+      title: "阻力性能与堵灰分析",
+      url: "/prediction2/" + route.params.deviceType,
       icon: "/images/navigation/icon1.png",
     },
     {
-      title: route.params.deviceType === "0" || route.params.deviceType === "1" ? "失速预测与分析" : "喘振预测与分析",
-      url: "/prediction/" + route.params.deviceType,
+      title: "换热元件预测性维护与分析",
+      url: "/preventive2/" + route.params.deviceType,
       icon: "/images/navigation/icon2.png",
     },
     {
-      title: "预防性维护",
-      url: "/preventive/" + route.params.deviceType,
+      title: "设备可用性分析",
+      url: "/availability2/" + route.params.deviceType,
       icon: "/images/navigation/icon3.png",
     },
     {
-      title: "设备概述",
-      url: "/equipment/" + route.params.deviceType,
+      title: "壁温趋势分析",
+      url: "/perfect-temperature/" + route.params.deviceType,
       icon: "/images/navigation/icon4.png",
     },
-    {
-      title: "可用性分析",
-      url: "/availability/" + route.params.deviceType,
-      icon: "/images/navigation/icon5.png",
-    },
-    {
-      title: "能耗分析",
-      url: "/energy/" + route.params.deviceType,
-      icon: "/images/navigation/icon6.png",
-    },
-    {
-      title: "报告汇总",
-      titleC: "报告分析与集成",
-      url: "/analysis/" + route.params.deviceType,
-      icon: "/images/navigation/icon7.png",
-    },
-    {
-      title: "帮助",
-      titleC: "使用说明",
-      url: "/help/" + route.params.deviceType,
-      icon: "/images/navigation/icon8.png",
-    },
+    // {
+    //   title: "可用性分析",
+    //   url: "/availability/" + route.params.deviceType,
+    //   icon: "/images/navigation/icon5.png",
+    // },
+    // {
+    //   title: "能耗分析",
+    //   url: "/energy/" + route.params.deviceType,
+    //   icon: "/images/navigation/icon6.png",
+    // },
+    // {
+    //   title: "报告汇总",
+    //   titleC: "报告分析与集成",
+    //   url: "/analysis/" + route.params.deviceType,
+    //   icon: "/images/navigation/icon7.png",
+    // },
+    // {
+    //   title: "帮助",
+    //   titleC: "使用说明",
+    //   url: "/help/" + route.params.deviceType,
+    //   icon: "/images/navigation/icon8.png",
+    // },
   ],
   recommenOpen: false,
   confirmLoading: false,
@@ -157,7 +157,7 @@ const handSetWebPath = (url) => {
           <div class="container-titleContent-row-title" v-if="getNavigationTitle()">
             {{ getNavigationTitle() }}
           </div>
-          <slot name="header-block"> </slot>
+          <slot name="header-block" v-else> </slot>
         </div>
         <slot name="header-right"> </slot>
         <TimeBlock v-if="props.timeShow" />

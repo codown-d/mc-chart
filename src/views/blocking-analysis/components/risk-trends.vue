@@ -132,8 +132,8 @@ const getDeviceAV = (deviceName) => {
     dataType: "DeviceDegradation",
     // timeFrom:  dayjs().subtract(60, 'day'),
     // timeEnd: dayjs(),
-    timeFrom: "2013-02-01T20:55:00+08:00",
-    timeEnd: "2013-04-02T00:00:00+08:00",
+    timeFrom: "2012-01-01T20:55:00+08:00",
+    timeEnd: "2013-01-01T00:00:00+08:00",
   };
   API.getData(params).then((res) => {
     const chartInstance = echartComponent.value.getChartInstance();
@@ -142,7 +142,7 @@ const getDeviceAV = (deviceName) => {
         xAxis: [
           {
             type: "category",
-            data: res.data.map((item) => dayjs(item.timestamp).format("MM-DD")),
+            data: res.data.map((item) => dayjs(item.timestamp).format("YYYY-MM-DD")),
           },
         ],
         series: [

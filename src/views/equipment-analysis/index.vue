@@ -1,6 +1,6 @@
 <template>
   <div class="h-[100vh] w-full">
-    <pangge-Header :timeShow="true" :back="true" :navigation="false">
+    <pangge-Header :timeShow="true" :back="false" :navigation="false">
       <template v-slot:header-block>
         <div class="text-[#fff] text-[40px]">预热器概述</div>
       </template>
@@ -101,7 +101,7 @@
                       style="cursor: pointer"
                       @click="handleAclick(`/perfect-temperature/2`)"
                     >
-                    壁温趋势分析
+                      壁温趋势分析
                     </p>
                     <p
                       style="cursor: pointer"
@@ -160,7 +160,7 @@ let actionList = ref([
     path: "/prediction2/2",
   },
   {
-    title:"换热元件预测性维护与分析",
+    title: "换热元件预测性维护与分析",
     icon: "f2.png",
     path: "/preventive2/2",
   },

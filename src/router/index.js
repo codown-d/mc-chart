@@ -96,7 +96,7 @@ const router = createRouter({
     {
       path: '/perfect-temperature/:deviceType',
       name: 'perfect-temperature',
-      component: PerfectTemperature
+      component: PerfectTemperature,
     },
     {
       path: '/preventive/:deviceType',
