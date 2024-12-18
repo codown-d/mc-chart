@@ -47,7 +47,7 @@ let init = () => {
     left: "10%",
     top: "41%",
     bottom: "28%",
-    right: "10%",
+    right: "14%",
   },
     legend: {
       bottom: "0%",

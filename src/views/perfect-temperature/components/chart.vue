@@ -227,7 +227,7 @@ const data = [
   [6, 22, 2],
   [6, 23, 6],
 ].map(function (item) {
-  return [item[1], item[0], item[2] || "-"];
+  return [item[1]||1, item[0], item[2] ||3];
 });
 let option = ref({
  
