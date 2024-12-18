@@ -3,43 +3,32 @@
     <div class="absolute flex justify-between w-full z-50">
       <div class="flex items-center">
         <pangge-Title text="预热器关键参数趋势" class="ml-5 mr-4" />
-        <a-range-picker
-          v-model:value="valueTime"
-          show-time
-          size="small"
-          class="w-[320px]"
-        />
+        <a-range-picker v-if="type !== 'biwen'" v-model:value="valueTime" show-time size="small" class="w-[280px]" />
       </div>
-      <div class="text-[14px] mr-5 flex justify-end flex-1 items-center">
-        设备：<a-select
-          v-model:value="valueLine"
-          size="small"
-          class="w-[80px]"
-          :options="deviceInfoOp"
-        ></a-select>
-        参数：<a-select
-          v-model:value="valueLinePm"
-          mode="multiple"
-          :maxTagTextLength="5"
-          :maxTagCount="2"
-          size="small"
-          placeholder="请选择参数"
-          class="w-[320px] min-w-[270px]"
-          :options="optionsPm"
-        ></a-select>
+      <div class="text-[16px] mr-5 flex justify-end flex-1 items-center">
+        <span class="mr-1">
+          设备：<a-select v-model:value="valueLine" size="small"  :options="deviceInfoOp"></a-select>
+        </span>
+        参数：<a-select v-model:value="valueLinePm" mode="multiple" :maxTagTextLength="4" :maxTagCount="2" size="small"
+          placeholder="请选择参数" class="w-[320px] min-w-[270px]" :options="optionsPm"></a-select>
       </div>
     </div>
-
     <Line :option="option" ref="echartComponent" />
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive, ref, nextTick, watch } from "vue";
+import { defineProps, reactive, ref, nextTick, watch } from "vue";
 import Line from "../echarts/line.vue";
 import API from "@/api";
 import { merge, find } from "lodash";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import dayjs from "dayjs";
+const props = defineProps({
+  type: {
+    type: String,
+    default: '',
+  },
+});
 const echartComponent = ref(null);
 let valueLine = ref();
 let valueLinePm = ref(["Gas_Inlet_Temperture", "Gas_Outlet_Temperture"]);

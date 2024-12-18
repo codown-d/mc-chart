@@ -38,7 +38,6 @@ function filterEmptyConty(data) {
 // 未经过模型映射的originalResponse
 // 请求的requestData，该函数是请求的最后一个步骤	function(response,originalResponse,requestData)
 // isCache 不会变更的数据 是否缓存
-
 function Requsest({
     url,
     data,
@@ -54,15 +53,12 @@ function Requsest({
 }) {
     return new Promise(async (resolve, reject) => {
         const params = data
-
         if (filterEmpty) {
             filterEmptyConty(params)
         }
-
         if (typeof beforeRequest === 'function') {
             beforeRequest(params)
         }
-
         const RequsestData = {
             url: '/api'+url,
             method: method,

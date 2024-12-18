@@ -1,5 +1,11 @@
 <template>
   <div class="relative w-full h-full">
+    <div class="flex">
+      <div class='flex items-center mb-4' 
+      v-for="item in legendList">
+        <div class="w-4 h-4 mx-3" :style="'background:'+item?.color"></div> {{ item?.label }}
+      </div>
+    </div>
     <div class="chart" :class="class" ref="chartContainer" style="height: 100%; width: 100%"></div>
     <a-spin v-if="!isReady" class="absolute z-10 top-[50%] left-[50%]" />
   </div>
@@ -22,13 +28,16 @@ interface PointData {
 }
 const props = defineProps<{
   data: ChartData;
-  legend: {
-    type: Boolean,
+  legendList: {
+    type: Array<{
+      label:String;
+      color:String;
+    }>,
     required: false, // 设置为 false，使其成为可选项
-    default: false // 设置默认值为 true
+    default: [] // 设置默认值为 true
   },
   pointSets: {
-    type:  PointData[],
+    type: PointData[],
     default: [] // 设置默认值为 true
   }
 }>();
@@ -46,18 +55,17 @@ const chartContainer = ref<HTMLElement | null>(null);
 let chart = ref()
 const drawChart = () => {
   if (!chartContainer.value) return; // 确保容器存在
-  chart.value&&chartContainer.value?.removeChild(chart.value)
+  chart.value && chartContainer.value?.removeChild(chart.value)
   const data = props.data;
-  const pointSets = props?.pointSets||[];
+  const pointSets = props?.pointSets || [];
   console.log(pointSets)
   chart.value = Plot.plot({
     color: {
-      legend: props.legend,
+      legend: false,
       padding: 20,
       transform: (y) => (y) / 1,
       labelOffset: 20,
       tickPadding: 10,
-      label: "Elevation (m)",
     },
     marks: [
       Plot.contour(data.values, {
@@ -67,14 +75,20 @@ const drawChart = () => {
         stroke: "black",
       }),
       Plot.dot(pointSets, {
-          x: 'x',
-          y: 'y', 
-          fill: (d) => d.color, 
-          r: 5, 
-          stroke: 'black'
-        })
-      // Plot.dot(randomPoints , { fill: 'red', r: 5,stroke: 'black' }),  
+        x: 'x',
+        y: 'y',
+        fill: (d) => d.color,
+        r: 5,
+        stroke: 'black'
+      }),
+
     ],
+    y: {
+      label: "吹灰压力", tickSize: 0, tickFormat: (d: any, i: number) => d * 10
+    },
+    x: {
+      label: "吹灰温度", tickSize: 0, tickFormat: (d: any, i: number) => d
+    }
   });
   chartContainer.value.appendChild(chart.value);
 };

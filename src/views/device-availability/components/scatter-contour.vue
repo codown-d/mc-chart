@@ -8,7 +8,19 @@
         :options="deviceInfoOp"
       ></a-select>
     </div>
+    <div class="flex justify-end">
+      <div class="flex flex-wrap w-[530px]" v-if="dataItem">
+        <div
+          v-for="item in optionsPm.slice(1)"
+          class="flex flex-col text-[16px] w-[33.3%]"
+        >
+          <span>{{ item.label }}：{{ dataItem[item.value] }}</span>
+        </div>
+      </div>
+    </div>
+    <div style="height:calc(100% - 32px)">
     <Line :option="option" ref="echartComponent" />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -55,7 +67,7 @@ let option = ref({
   grid: {
     left: "8%",
     right: "6%",
-    top: "20%",
+    top: "4%",
     bottom: "20%",
   },
   legend: {
@@ -92,6 +104,7 @@ let { deviceInfoOp } = useDeviceInfo();
 watch(deviceInfoOp, (data) => {
   valueLine.value = data[0].value;
 });
+let dataItem = ref();
 const getDeviceAV = () => {
   var params = {
     deviceName: valueLine.value,
@@ -101,6 +114,7 @@ const getDeviceAV = () => {
     timeEnd: "2013-03-02T00:00:00+08:00",
   };
   API.getData(params).then((res) => {
+    dataItem.value = res.data[0];
     const chartInstance = echartComponent.value.setChartInit();
     let opt = Object.assign({}, option.value, {
       xAxis: [
@@ -109,16 +123,18 @@ const getDeviceAV = () => {
           max: dayjs(params.timeEnd).valueOf(),
         },
       ],
-      series: optionsPm.value.map((item) => {
-        return {
-          name: item.label,
-          type: "line",
-          symbol: "none",
-          data: res.data.map((ite) => {
-            return [dayjs(ite.Date).valueOf(), ite[item.value]];
-          }),
-        };
-      }),
+      series: optionsPm.value
+        .filter((item) => item.value === "CCET_Value")
+        .map((item) => {
+          return {
+            name: item.label,
+            type: "line",
+            symbol: "none",
+            data: res.data.map((ite) => {
+              return [dayjs(ite.Date).valueOf(), ite[item.value]];
+            }),
+          };
+        }),
     });
     chartInstance.setOption(opt);
   });

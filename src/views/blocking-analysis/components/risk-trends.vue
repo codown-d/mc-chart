@@ -74,6 +74,13 @@ let option = ref({
     },
     
   ],
+  dataZoom: [
+    {
+      type: "slider",
+      start: 80,
+      end: 100,
+    },
+  ],
   xAxis: [
     {
       type: "category",

@@ -120,12 +120,13 @@ class API {
   }
 
   // 获取设备信息列表
-  getDeviceInfo () {
+  getDeviceInfo (data) {
     return request({
       url: '/data',
       method: "get",
       params:{
-        dataType:"DeviceInfo"
+        dataType:"DeviceInfo",
+        ...data
       }
     });
   }

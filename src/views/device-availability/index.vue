@@ -20,15 +20,15 @@
             <PredictiveAn />
           </div>
       </div>
-      <div class="h-full w-[40%] mx-5">
+      <div class="h-full w-[50%] mx-5">
         <div class="h-[50%]  flex" style="height: calc(50% - 40px)">
-          <div class="w-[50%] bg-white mr-5 p-4">
+          <div class="w-[40%] bg-white mr-5 p-4 pb-0">
             <pangge-Title text="满负荷运行时间占比" class="mb-[10px]"></pangge-Title>
             <div style="height:calc(100% - 32px)">
               <ThermalEfficiency :device_info="valueLine" />
             </div>
           </div>
-          <div class="flex-1 bg-white p-4">
+          <div class="flex-1 bg-white p-4 pb-0">
             <pangge-Title text="X占比" class="mb-[10px]"></pangge-Title>
             <div style="height:calc(100% - 32px)">
               <ScatterDusty :device_info="valueLine"/>

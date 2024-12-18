@@ -1,10 +1,9 @@
 <template>
   <div
     class="relative w-full h-full overflow-hidden"
-    style="perspective: 150px"
   >
     <img
-      src="/images/bw-bj.jpg"
+      src="/images/bw-bj1.jpg"
       alt=""
       class="absolute w-full h-full top-0 left-0"
     />
@@ -13,7 +12,7 @@
       id="myCanvas"
       :class="class"
       ref="barChart"
-      style=" transform:translate(0.5px, 0.5px) rotateX(45deg) rotateY(45deg) scale(0.3,0.3) skew(10deg,10deg)"
+      style=" transform:translate(-25.5px, 14.5px) rotateX(45deg) rotateY(51deg) scale(0.65, 0.3) skew(-1deg, 10deg)"
     ></div>
   </div>
 </template>
@@ -24,6 +23,7 @@ import { merge } from "lodash";
 const barChart = ref(null);
 const myChart = ref(null);
 
+    //style="perspective: 150px"
 const props = defineProps({
   option: {
     type: Object,

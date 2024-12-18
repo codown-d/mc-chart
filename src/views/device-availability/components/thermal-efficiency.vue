@@ -50,7 +50,7 @@ const getDeviceAV = async (deviceName) => {
         {
           name: "占比",
           type: "pie",
-          radius: ["55%", "90%"],
+          radius: ["60%", "40%"],
           data: list.map((item: any, index) => {
             return {
               name: item.name.indexOf('负荷')==-1?item.name+'负荷':item.name,

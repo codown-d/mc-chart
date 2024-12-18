@@ -1,7 +1,7 @@
 <template>
   <div class="relative" style="height: calc(100%)">
     <div class="absolute flex justify-between w-full z-50">
-      <pangge-Title text="预热器关键参数趋势" class="ml-3 mr-4" />
+      <pangge-Title text="吹灰效果分析" class="ml-3 mr-4" />
       <div
         class="text-[14px] mr-5 flex justify-end flex-1 items-center"
         v-if="false"
@@ -35,8 +35,10 @@ let option = ref({
   },
   xAxis3D: {
     type: "category",
-    name: "时间",
+    name: "",
+    show:false,
     axisLabel: {
+      show:false,
       rotate: -45,
       color: "#000",
       formatter: function (value) {
@@ -57,7 +59,7 @@ let option = ref({
   },
   yAxis3D: {
     type: "category",
-    name: "设备", // Y轴显示时间值
+    name: "清洗次数", // Y轴显示时间值
     data: deviceInfoOp.value.map((item) => item.label),
     offset: 20,
     axisLabel: {
@@ -75,7 +77,6 @@ let option = ref({
       },
     },
   },
-  dimensions: ["时间", "设备", "振幅"],
   zAxis3D: {
     type: "value",
     name: "振幅",
@@ -86,30 +87,38 @@ let option = ref({
       autoRotate: false, // 关闭自动旋转
       projection: "orthographic", // 使用正交投影
       orthographicSize: 100,
-      beta: 6,
-      maxAlpha: 10,
+      beta: 10,
+      maxAlpha: 50,
       center: [0, 0, 0],
     },
-    boxWidth: 120,
-    boxDepth: 50,
+    boxWidth: 80,
+    boxDepth: 100,
     boxHeight: 50,
   },
   series: [],
 });
-const getDeviceAV = () => {
-  var params = {
+
+const getDeviceAV = async(deviceName="APH_A") => {
+  let res = await API.getDeviceInfo({deviceName})
+  let Clean_start_time=JSON.parse(res.data[0].Clean_start_time)
+  let Clean_down_time=JSON.parse(res.data[0].Clean_down_time)
+  Promise.all(Clean_start_time.map(async (item,index)=>{
+    var params = {
+    deviceName,
     dataType: "DeviceFeature",
-    // output: optionsPm.value.map((item) => item.value).join(","),
-    timeFrom: "2012-02-10T23:59:59+08:00",//DeviceInfo 表 Clean_down_time
-    timeEnd: "2024-12-11T00:00:00+08:00",
+    timeFrom: `${item}T23:59:59+08:00`,//DeviceInfo 表 Clean_down_time
+    timeEnd: `${Clean_down_time[index]}T23:59:59+08:00`,
   };
-  API.getData(params).then((res) => {
+    let res = await API.getData(params)
+    return res.data
+  })).then((list) => {
+    console.log(list)
     const chartInstance = echartComponent.value.getChartInstance();
-    let arr = deviceInfoOp.value.map(item=>{
+    let arr = list.map((item,index)=>{
         return  {
           type: "line3D",
-          data: res.data.filter(ite=>ite.Device_Name==item.value).map((ite) => {
-            return [ite.timestamp, item.value, ite.RMSE_VALUE];
+          data: item.map((ite) => {
+            return [ite.timestamp, `${index+1}`, ite.RMSE_VALUE];
           }), // 数据
         }
       })
@@ -117,9 +126,9 @@ const getDeviceAV = () => {
     let opt = Object.assign({}, option.value, {
       yAxis3D: {
         type: "category",
-        name: "设备", // Y轴显示时间值
-        data: deviceInfoOp.value.map((item) => item.label),
-        offset: 20,
+        name: "清洗次数", // Y轴显示时间值
+        data: list.map((item,index)=>`${index+1}`),
+        offset: 40,
         axisLabel: {
           left: "20px",
           color: "#000",
