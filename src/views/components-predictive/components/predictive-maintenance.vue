@@ -271,13 +271,13 @@ const getDeviceAV = (deviceName) => {
     chartInstanceBar.setOption(
       merge(optionBar.value, {
         xAxis: {
-          max: 10,
+          max: 100,
         },
         series: [
           {
             type: "bar",
             stack: "total",
-            data: [2],
+            data: [75],
             itemStyle: {
               color: "#09ae3a",
             },
@@ -285,7 +285,7 @@ const getDeviceAV = (deviceName) => {
           {
             type: "bar",
             stack: "total",
-            data: [3],
+            data: [15],
             itemStyle: {
               color: "#ffed00",
             },
@@ -293,7 +293,7 @@ const getDeviceAV = (deviceName) => {
           {
             type: "bar",
             stack: "total",
-            data: [5],
+            data: [10],
             itemStyle: {
               color: "#ab0404",
             },

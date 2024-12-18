@@ -39,11 +39,11 @@ watch(deviceInfoOp, (data) => {
 const getDeviceAV = (deviceName) => {
   var params = {
     deviceName,
-    dataType: "DeviceCBM",
+    dataType: "DeviceLoad",
     // timeFrom:  dayjs().subtract(60, 'day'),
     // timeEnd: dayjs(),
-    timeFrom: "2021-06-14T00:00:00+08:00",
-    timeEnd: "2021-07-22T00:00:00+08:00",
+    timeFrom: "2012-02-10T00:00:00+08:00",
+    timeEnd: "2013-10-20T00:00:00+08:00",
   };
   API.getData(params).then((res) => {
     const chartInstance = echartComponent.value.getChartInstance();
@@ -57,7 +57,7 @@ const getDeviceAV = (deviceName) => {
             symbol: "none",
             smooth: true,
             data: data.map(item => {
-              return [dayjs(item.timestamp).valueOf(), Math.random()*10]
+              return [dayjs(item.timestamp).valueOf(), item.differ_gas_press]
             }),
           },
           {
@@ -65,7 +65,7 @@ const getDeviceAV = (deviceName) => {
             type: "line",
             symbol: "none",
             data: data.map(item => {
-              return [dayjs(item.timestamp).valueOf(),Math.random()*10]
+              return [dayjs(item.timestamp).valueOf(),item.gas_inlet_temp]
             }),
           },
           
@@ -74,7 +74,7 @@ const getDeviceAV = (deviceName) => {
             type: "line",
             symbol: "none",
             data: data.map(item => {
-              return [dayjs(item.timestamp).valueOf(),Math.random()*10]
+              return [dayjs(item.timestamp).valueOf(),item.gas_outlet_temp]
             }),
           },
           
@@ -83,7 +83,7 @@ const getDeviceAV = (deviceName) => {
             type: "line",
             symbol: "none",
             data: data.map(item => {
-              return [dayjs(item.timestamp).valueOf(),Math.random()*10]
+              return [dayjs(item.timestamp).valueOf(),item.unitload]
             }),
           },
           {
@@ -91,7 +91,7 @@ const getDeviceAV = (deviceName) => {
             type: "line",
             symbol: "none",
             data: data.map(item => {
-              return [dayjs(item.timestamp).valueOf(),Math.random()*10]
+              return [dayjs(item.timestamp).valueOf(),item.differ_pa_press]
             }),
           },
           {
@@ -99,7 +99,7 @@ const getDeviceAV = (deviceName) => {
             type: "line",
             symbol: "none",
             data: data.map(item => {
-              return [dayjs(item.timestamp).valueOf(),Math.random()*10]
+              return [dayjs(item.timestamp).valueOf(),item.differ_sa_press]
             }),
           },
         ],
