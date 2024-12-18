@@ -1,9 +1,7 @@
 <template>
-  <div
-    class="relative w-full h-full overflow-hidden"
-  >
+  <div class="relative w-full h-full overflow-hidden">
     <img
-      src="/images/bw-bj1.jpg"
+      src="/images/bw.png"
       alt=""
       class="absolute w-full h-full top-0 left-0"
     />
@@ -12,7 +10,7 @@
       id="myCanvas"
       :class="class"
       ref="barChart"
-      style=" transform:translate(-25.5px, 14.5px) rotateX(45deg) rotateY(51deg) scale(0.65, 0.3) skew(-1deg, 10deg)"
+      
     ></div>
   </div>
 </template>
@@ -23,7 +21,7 @@ import { merge } from "lodash";
 const barChart = ref(null);
 const myChart = ref(null);
 
-    //style="perspective: 150px"
+//style="perspective: 150px"
 const props = defineProps({
   option: {
     type: Object,
@@ -43,8 +41,14 @@ let init = () => {
   var option = {
     tooltip: {
       trigger: "item",
-      formatter: "{a} <br/>{b} : {d}%", // 显示百分比
+      formatter: "{b}°C", // 显示百分比
     },
+    grid: {
+    left: "10%",
+    top: "41%",
+    bottom: "28%",
+    right: "10%",
+  },
     legend: {
       bottom: "0%",
       left: "center",
@@ -58,7 +62,7 @@ watch(
   props,
   (newValue, _oldValue) => {
     const option = myChart.value.getOption();
-    myChart.value.setOption(merge({}, option, option, newValue));
+    myChart.value.setOption(merge({}, option, newValue));
   },
   { deep: true }
 );

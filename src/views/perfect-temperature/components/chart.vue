@@ -1,8 +1,8 @@
 <template>
   <div class="w-full h-full relative">
     <pangge-Title text="壁温分析" class="mb-[10px]"></pangge-Title>
-    <div style="height: calc(100% - 26px);">
-    <heatmap :option="option" ref="echartComponent"></heatmap>
+    <div style="height: calc(100% - 26px)">
+      <heatmap :option="option" ref="echartComponent"></heatmap>
     </div>
   </div>
 </template>
@@ -10,7 +10,6 @@
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Heatmap from "../echarts/heatmap.vue";
 import { findIndex, merge } from "lodash";
-import API from "@/api";
 const echartComponent = ref(null);
 
 const props = defineProps({
@@ -231,12 +230,7 @@ const data = [
   return [item[1], item[0], item[2] || "-"];
 });
 let option = ref({
-  grid: {
-    left: "0%",
-    right: "0%",
-    bottom: "0%",
-    top: "0%",
-  },
+ 
   xAxis: {
     show: false,
     type: "category",
@@ -271,9 +265,10 @@ const getDeviceAV = async (deviceName) => {
     // timeFrom: "2013-01-02T23:59:59+08:00",
     // timeEnd: "2013-03-02T00:00:00+08:00",
   };
-  let res = await API.getData(params);
+  // let res = await API.getData(params);
   const chartInstance = echartComponent.value.getChartInstance();
-  chartInstance.setOption(
+  console.log(chartInstance);
+  chartInstance?.setOption(
     merge({}, option.value, {
       series: [
         {
@@ -285,6 +280,8 @@ const getDeviceAV = async (deviceName) => {
   );
 };
 onMounted(() => {
-  getDeviceAV(props.device_info.Device_Name);
+  setTimeout(() => {
+    getDeviceAV(props.device_info.Device_Name);
+  }, 500);
 });
 </script>
