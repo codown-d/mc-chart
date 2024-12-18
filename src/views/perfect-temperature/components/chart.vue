@@ -107,6 +107,7 @@ const getDeviceAV = async (deviceName) => {
         },
       ],
     })
+    
   );
 };
 watch(
