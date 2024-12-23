@@ -146,7 +146,7 @@ import Charts from "./components/charts.vue";
 import FanOverview from "./components/fan-overview.vue";
 import { Popover } from "ant-design-vue";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
-import API from "@/api";
+import API from "@/api_v2";
 import { merge } from "lodash";
 const route = useRoute();
 let deviceDataList = ref();

@@ -7,7 +7,7 @@
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Line from "@/views/blocking-analysis/echarts/line.vue";
 import { merge } from "lodash";
-import API from "@/api";
+import API from "@/api_v2";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import dayjs from "dayjs";
 const echartComponent = ref(null);

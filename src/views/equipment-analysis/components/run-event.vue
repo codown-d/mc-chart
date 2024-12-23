@@ -4,7 +4,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Bar from "../echarts/bar.vue";
-import API from "@/api";
+import API from "@/api_v2";
 import { merge, keys } from "lodash";
 import { countBy } from "lodash";
 import { useCulPercent } from "@/utils";

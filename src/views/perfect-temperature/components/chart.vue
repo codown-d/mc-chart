@@ -15,7 +15,7 @@
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Heatmap from "../echarts/heatmap.vue";
 import { findIndex, merge, max, min } from "lodash";
-import API from "@/api";
+import API from "@/api_v2";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 const echartComponent = ref(null);
 
@@ -93,7 +93,6 @@ const getDeviceAV = async (deviceName) => {
 
   const maxItem = max(list);
   const minItem = min(list);
-  console.log(minItem,maxItem)
   chartInstance?.setOption(
     merge({}, option.value, {
       visualMap: {
@@ -113,7 +112,8 @@ const getDeviceAV = async (deviceName) => {
 watch(
   () => deviceInfoOp,
   (newValue, _oldValue) => {
-    getDeviceAV(newValue[0]?.value);
+    console.log(newValue,newValue[0]?.value)
+    getDeviceAV(newValue.value[0]?.value);
   },
   { deep: true }
 );

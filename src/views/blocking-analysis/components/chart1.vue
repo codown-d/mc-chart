@@ -20,9 +20,10 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Line3D from "@/views/sootblowing-efficiency/echarts/line3d.vue";
-import API from "@/api";
+import API from "@/api_v2";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import dayjs from "dayjs";
+import {groupBy,values}  from 'lodash'
 const echartComponent = ref(null);
 let valueLine = ref();
 let { deviceInfoOp } = useDeviceInfo();
@@ -36,15 +37,15 @@ let option = ref({
   xAxis3D: {
     type: "category",
     name: "",
-    show:false,
+    show: false,
     axisLabel: {
-      show:false,
+      show: false,
       rotate: -45,
       color: "#000",
       formatter: function (value) {
         // 使用 dayjs 格式化时间，假设时间戳为毫秒
-        return dayjs(value).format('MM/DD HH:mm');
-      }
+        return dayjs(value).format("MM/DD HH:mm");
+      },
     },
     axisLine: {
       lineStyle: {
@@ -60,7 +61,7 @@ let option = ref({
   yAxis3D: {
     type: "category",
     name: "清洗次数", // Y轴显示时间值
-    data: deviceInfoOp.value.map((item) => item.label),
+    data: deviceInfoOp.value?.map((item) => item.label),
     offset: 20,
     axisLabel: {
       left: "20px",
@@ -80,7 +81,6 @@ let option = ref({
   zAxis3D: {
     type: "value",
     name: "振幅",
-  
   },
   grid3D: {
     viewControl: {
@@ -98,56 +98,53 @@ let option = ref({
   series: [],
 });
 
-const getDeviceAV = async(deviceName="APH_A") => {
-  let res = await API.getDeviceInfo({deviceName})
-  let Clean_start_time=JSON.parse(res.data[0].Clean_start_time)
-  let Clean_down_time=JSON.parse(res.data[0].Clean_down_time)
-  Promise.all(Clean_start_time.map(async (item,index)=>{
-    var params = {
+const getDeviceAV = async (deviceName = "APH_A") => {
+  let res = await API.getDeviceInfo({ deviceName });
+  let Clean_start_time = JSON.parse(res.data[0].Clean_start_time);
+  let Clean_down_time = JSON.parse(res.data[0].Clean_down_time);
+  let timeFrom = Clean_start_time[0];
+  let timeEnd = Clean_down_time.at(-1);
+  var params = {
     deviceName,
     dataType: "DeviceFeature",
-    timeFrom: `${item}T23:59:59+08:00`,//DeviceInfo 表 Clean_down_time
-    timeEnd: `${Clean_down_time[index]}T23:59:59+08:00`,
+    timeFrom: `${timeFrom}T23:59:59+08:00`, //DeviceInfo 表 Clean_down_time
+    timeEnd: `${timeEnd}T23:59:59+08:00`,
   };
-    let res = await API.getData(params)
-    return res.data
-  })).then((list) => {
-    console.log(list)
-    const chartInstance = echartComponent.value.getChartInstance();
-    let arr = list.map((item,index)=>{
-        return  {
-          type: "line3D",
-          data: item.map((ite) => {
-            return [ite.timestamp, `${index+1}`, ite.RMSE_VALUE];
-          }), // 数据
-        }
-      })
-      console.log(arr)
-    let opt = Object.assign({}, option.value, {
-      yAxis3D: {
-        type: "category",
-        name: "清洗次数", // Y轴显示时间值
-        data: list.map((item,index)=>`${index+1}`),
-        offset: 40,
-        axisLabel: {
-          left: "20px",
-          color: "#000",
-        },
-        axisLine: {
-          lineStyle: {
-            color: "#666",
-          },
-        },
-        axisPointer: {
-          lineStyle: {
-            color: "#000",
-          },
+  let {data} = await API.getData(params);
+  let list = values(groupBy(data, 'Index_clean'))
+  const chartInstance = echartComponent.value.getChartInstance();
+  let arr = list.map((item, index) => {
+    return {
+      type: "line3D",
+      data: item.map((ite) => {
+        return [ite.timestamp, `${index + 1}`, ite.RMSE_VALUE];
+      }), // 数据
+    };
+  });
+  let opt = Object.assign({}, option.value, {
+    yAxis3D: {
+      type: "category",
+      name: "清洗次数", // Y轴显示时间值
+      data: list.map((item, index) => `${index + 1}`),
+      offset: 40,
+      axisLabel: {
+        left: "20px",
+        color: "#000",
+      },
+      axisLine: {
+        lineStyle: {
+          color: "#666",
         },
       },
-      series: arr,
-    });
-    chartInstance.setOption(opt);
+      axisPointer: {
+        lineStyle: {
+          color: "#000",
+        },
+      },
+    },
+    series: arr,
   });
+  chartInstance.setOption(opt);
 };
 watch(valueLine, (data) => {
   getDeviceAV();

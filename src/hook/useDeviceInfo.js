@@ -1,4 +1,4 @@
-import API from "@/api";
+import API from "@/api_v2";
 import { ref ,onMounted} from 'vue';
 
 export function useDeviceInfo() {

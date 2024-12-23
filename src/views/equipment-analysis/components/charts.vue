@@ -15,7 +15,7 @@ import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Chart from "./chart.vue";
 import Line from "./line.vue";
 
-import API from "@/api";
+import API from "@/api_v2";
 import { useCulPercent } from "@/utils";
 const props = defineProps({
   device_info: {

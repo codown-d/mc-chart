@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { onMounted, defineProps, ref, nextTick, watch } from "vue";
 import Gauge from "../echarts/gauge.vue";
-import API from "@/api";
+import API from "@/api_v2";
 import { merge } from "lodash";
 const echartComponent = ref(null);
 let option = ref({

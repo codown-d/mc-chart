@@ -78,7 +78,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick, watch, computed } from "vue";
 import { values, keys } from "lodash";
-import API from "@/api";
+import API from "@/api_v2";
 let dataInfo = ref({
   differ_pressure: {
     name: "烟气差压",

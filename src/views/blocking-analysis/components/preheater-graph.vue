@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, nextTick, watch } from "vue";
 import Line from "../echarts/line.vue";
-import API from "@/api";
+import API from "@/api_v2";
 import { merge, find } from "lodash";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import dayjs from "dayjs";

@@ -10,7 +10,7 @@
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Line from "@/views/blocking-analysis/echarts/line.vue";
 import Bar from "@/views/equipment-analysis/echarts/bar.vue";
-import API from "@/api";
+import API from "@/api_v2";
 import { merge } from "lodash";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import dayjs from "dayjs";

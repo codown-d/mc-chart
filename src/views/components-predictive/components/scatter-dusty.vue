@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Scatter from "../d3/scatter.vue";
-import API from "@/api";
+import API from "@/api_v2";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import data from "../data/volcano.js";
 const echartComponent = ref(null);

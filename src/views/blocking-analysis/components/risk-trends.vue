@@ -19,7 +19,7 @@
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Line from "../echarts/line.vue";
 import Bar from "@/views/equipment-analysis/echarts/bar.vue";
-import API from "@/api";
+import API from "@/api_v2";
 import { merge } from "lodash";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import dayjs from "dayjs";
@@ -132,8 +132,8 @@ const getDeviceAV = (deviceName) => {
     dataType: "DeviceDegradation",
     // timeFrom:  dayjs().subtract(60, 'day'),
     // timeEnd: dayjs(),
-    timeFrom: "2012-01-01T20:55:00+08:00",
-    timeEnd: "2013-01-01T00:00:00+08:00",
+    timeFrom: "2012-06-01T20:55:00+08:00",
+    timeEnd: "2012-12-01T00:00:00+08:00",
   };
   API.getData(params).then((res) => {
     const chartInstance = echartComponent.value.getChartInstance();

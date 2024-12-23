@@ -13,8 +13,8 @@ const state = reactive({
     nav: [
         { img: 'home-items-1.png', text: '离心风机', url: "/overview/0" },
         { img: 'home-items-2.png', text: '轴流风机', url: "/overview/1" },
+        { img: 'home-items-4.png', text: '预热器', url: "/overview2/2" },
         { img: 'home-items-3.png', text: '鼓风机', url: "/overview/2" },
-        { img: 'home-items-4.png', text: '预热器', url: "/overview2/2" }
     ]
 })
 

@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Line3D from "../echarts/line3d.vue";
-import API from "@/api";
+import API from "@/api_v2";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 const echartComponent = ref(null);
 let valueLine = ref();
