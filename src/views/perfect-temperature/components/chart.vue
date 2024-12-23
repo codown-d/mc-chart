@@ -34,14 +34,13 @@ const props = defineProps({
   },
 });
 const hours = new Array(20).fill("").map((item, index) => index + 1);
-// prettier-ignore
 const days = new Array(10).fill('').map((item,index)=>'GAS'+(index+1));
 
 let option = ref({
   xAxis: {
     show: false,
     type: "category",
-    data: hours,
+    data: days,
     splitArea: {
       show: true,
     },
@@ -49,7 +48,7 @@ let option = ref({
   yAxis: {
     show: false,
     type: "category",
-    data: days,
+    data: hours,
     splitArea: {
       show: true,
     },
@@ -84,10 +83,10 @@ const getDeviceAV = async (deviceName) => {
   const chartInstance = echartComponent.value.getChartInstance();
   let arr = [];
   let list = [];
+    for (let j = 0; j <days.length ; j++) {
   for (let i = 0; i < hours.length; i++) {
-    for (let j = 0; j < days.length; j++) {
       list.push(res.data[i]["GAS" + j]);
-      arr.push([i, j, res.data[i]["GAS" + j]]);
+      arr.push([j,hours.length-i , res.data[i]["GAS" + j]]);
     }
   }
 

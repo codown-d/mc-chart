@@ -1,5 +1,6 @@
 
 import { countBy,merge, keys } from "lodash";
+import API from "@/api";
 export function sampleByPercentage(start, end, percentages) {
   // 确保输入是有效的数字区间
   if (start >= end) {
@@ -104,3 +105,13 @@ export  const useCulPercent=(data) => {
     value:Number(((categoryCount[count] / totalCount) * 100).toFixed(2))
   }));
 };
+
+export const setWebPath = (url='/welcome')=>{
+  const data = {
+    id: 1,
+    urlPath: url
+  }
+  API.setWebPath(data).then((res) => {
+    console.log("res ", res);
+  })
+}

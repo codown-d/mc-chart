@@ -10,7 +10,6 @@
       id="myCanvas"
       :class="class"
       ref="barChart"
-      
     ></div>
   </div>
 </template>
@@ -44,11 +43,11 @@ let init = () => {
       formatter: "{b}°C", // 显示百分比
     },
     grid: {
-    left: "10%",
-    top: "41%",
-    bottom: "28%",
-    right: "14%",
-  },
+      left: "5%",
+      top: "41%",
+      bottom: "28%",
+      right: "14%",
+    },
     legend: {
       bottom: "0%",
       left: "center",

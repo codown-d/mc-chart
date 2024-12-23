@@ -117,7 +117,7 @@ class API {
   // 获取设备信息列表
   getDeviceInfo(data) {
     return request({
-      url: BASE_URL+"/data",
+      url: BASE_URL+"/aph/data",
       method: "get",
       params: {
         dataType: "DeviceInfo",
@@ -145,7 +145,7 @@ class API {
 
   getData(params) {
     return request({
-      url: BASE_URL+"/data",
+      url: BASE_URL+"/aph/data",
       method: "get",
       params: params,
     });
@@ -169,7 +169,7 @@ class API {
 
   getDataAgg(data) {
     return request({
-      url: BASE_URL+"/dataAgg",
+      url: BASE_URL+"/aph/dataAgg",
       method: "post",
       data,
     });

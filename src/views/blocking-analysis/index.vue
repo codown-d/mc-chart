@@ -30,11 +30,13 @@
 </template>
 <script setup>
 import { onMounted, reactive, ref, nextTick } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import ExpertAdvice from "./components/expert-advice.vue";
 import PreheaterGraph from "./components/preheater-graph.vue";
 import Chart1 from "./components/chart1.vue";
 import RiskTrends from "./components/risk-trends.vue";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
+import { setWebPath } from "@/utils";
 
 const state = reactive({
   deviceId: "",
@@ -44,4 +46,8 @@ const state = reactive({
 });
 
 let { deviceInfoList } = useDeviceInfo();
+const route = useRoute();
+onMounted(() => {
+  setWebPath('/child/' + route.params.deviceType + '/1')
+});
 </script>

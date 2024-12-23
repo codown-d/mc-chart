@@ -133,7 +133,7 @@ const getDeviceAV = (deviceName) => {
     // timeFrom:  dayjs().subtract(60, 'day'),
     // timeEnd: dayjs(),
     timeFrom: "2012-06-01T20:55:00+08:00",
-    timeEnd: "2012-12-01T00:00:00+08:00",
+    timeEnd: "2012-08-01T00:00:00+08:00",
   };
   API.getData(params).then((res) => {
     const chartInstance = echartComponent.value.getChartInstance();

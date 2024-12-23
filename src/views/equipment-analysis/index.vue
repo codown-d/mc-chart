@@ -148,6 +148,7 @@ import { Popover } from "ant-design-vue";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import API from "@/api_v2";
 import { merge } from "lodash";
+import { setWebPath } from "@/utils";
 const route = useRoute();
 let deviceDataList = ref();
 const state = reactive({
@@ -234,5 +235,7 @@ watch(deviceInfoList, (newValue) => {
     }
   );
 });
-onMounted(() => {});
+onMounted(() => {
+  setWebPath()
+});
 </script>
