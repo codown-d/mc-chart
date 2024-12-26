@@ -1,6 +1,6 @@
 import request from "./request";
 import DefaultRequest from "@/utils/request";
-const BASE_URL = "/api/v1";
+const BASE_URL = "/api";
 class API {
   // 用户登录
   Login({ tenantId, username, password, type, key, code }) {

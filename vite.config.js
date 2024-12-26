@@ -38,20 +38,20 @@ export default defineConfig({
     // 是否开启 https
     https: false,
     proxy: {
-      "/api/v1": {
+      "/api": {
         //target: "http://localhost:8087",
           // target: "http://120.197.149.12:8087",
         target: "http://43.143.215.181:9999",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/v1/, ""),
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      "/api/v2": {
-        //target: "http://localhost:8087",
-          // target: "http://120.197.149.12:8087",
-        target: "http://43.143.215.181:9999",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/v2/, ""),
-      },
+      // "/api": {
+      //   //target: "http://localhost:8087",
+      //     // target: "http://120.197.149.12:8087",
+      //   target: "http://43.143.215.181:9999",
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/api/, ""),
+      // },
     },
   },
   css: {

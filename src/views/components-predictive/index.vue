@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="px-4 flex h-full" style="height: calc(45% );">
-          <div class="w-[60%]">
+          <div class="w-[60%] h-full">
             <ScatterContour />
           </div>
           <div class="flex-1 relative h-full">

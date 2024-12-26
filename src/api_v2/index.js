@@ -1,5 +1,5 @@
 import request from "../api/request";
-const BASE_URL = "/api/v2";
+const BASE_URL = "/api";
 class APIV2 {
   // 获取数据点位
   getParamQuery(deviceName, params, startTime, endTime) {

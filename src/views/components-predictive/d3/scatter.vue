@@ -1,12 +1,12 @@
 <template>
   <div class="relative w-full h-full">
-    <div class="flex">
+    <div class="flex absolute">
       <div class='flex items-center mb-4 text-[16px]' 
       v-for="item in legendList">
         <div class="w-4 h-4 mx-3" :style="'background:'+item?.color"></div> {{ item?.label }}
       </div>
     </div>
-    <div class="chart" :class="class" ref="chartContainer" style="height: 100%; width: 100%"></div>
+    <div class="chart" :class="class" ref="chartContainer" style="height: 100%; width: 100%;padding-top: 30px;"></div>
     <a-spin v-if="!isReady" class="absolute z-10 top-[50%] left-[50%]" />
   </div>
 </template>
