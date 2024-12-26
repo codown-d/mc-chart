@@ -14,21 +14,21 @@ const PORT = 3099;
 const staticDir = path.join(__dirname, '/dist');
 app.use(express.static(staticDir));
 app.use(
-  '/api/v1',
+  '/api',
   createProxyMiddleware({
     target: 'http://43.143.215.181:9999',
     changeOrigin: true,
-    pathRewrite: { '^/api/v1': '' },
+    pathRewrite: { '^/api': '' },
   })
 );
-app.use(
-  '/api/v2',
-  createProxyMiddleware({
-    target: 'http://43.143.215.181:9999',
-    changeOrigin: true,
-    pathRewrite: { '^/api/v2': '' },
-  })
-);
+// app.use(
+//   '/api',
+//   createProxyMiddleware({
+//     target: 'http://43.143.215.181:9999',
+//     changeOrigin: true,
+//     pathRewrite: { '^/api': '' },
+//   })
+// );
 app.get('*', (req, res) => {
   res.sendFile(path.join(staticDir, 'index.html'));
 });
