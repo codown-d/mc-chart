@@ -1,42 +1,45 @@
 <template>
   <div class="relative h-full">
-    <div class="absolute w-[100px]  left-[50%] top-[30%] ml-[-50px]">
-      <div class="relative">
-        <img src="/images/arrow_rotating.svg"
-          :style="`transform:rotateX(${dataInfo.PA_Outlet_Temperture.value < dataInfo.SA_Outlet_Temperture.value ? 40 : -140}deg)`">
-        <div class="text-[16px] text-[#fff] text-center absolute top-[50%] left-[50%] w-[100%]" 
-        style="transform: translate(-50%, -50%);">
-          预热器<br />旋转方向</div>
+    <div class="relative h-full w-[486px]" style="margin: 0 auto;">
+      <div class="absolute w-[100px] z-10  left-[50%] top-[30%] ml-[-50px]">
+        <div class="relative">
+          <img src="/images/arrow_rotating.svg"
+            :style="`transform:rotateX(${dataInfo.PA_Outlet_Temperture.value < dataInfo.SA_Outlet_Temperture.value ? 40 : -140}deg)`">
+          <div class="text-[16px] text-[#fff] text-center absolute top-[50%] left-[50%] w-[100%]"
+            style="transform: translate(-50%, -50%);">
+            预热器<br />旋转方向</div>
+        </div>
       </div>
-    </div>
-    <div class="absolute w-[100px] left-[60%] top-[18%]">
-      <div class="relative">
-        <img src="/images/arrow.svg"  :style="`transform:rotateZ(${dataInfo.PA_Inlet_Pressure.value- Math.abs(dataInfo.PA_Outlet_Pressure.value)>0?-90:90}deg)`">
-        <div class="text-[16px] text-[#fff] text-center absolute top-[100%] left-[50%] w-[100%]" 
-        style="transform: translate(-50%, -50%);">
-        二次风侧<br />最高阻力</div>
+      <div class="absolute w-[100px] z-10  left-[58%] top-[8%]">
+        <div class="relative">
+          <img src="/images/arrow.svg"
+            :style="`transform:rotateZ(${dataInfo.PA_Inlet_Pressure.value - Math.abs(dataInfo.PA_Outlet_Pressure.value) > 0 ? -90 : 90}deg)`">
+          <div class="text-[16px] text-[#fff] text-center absolute top-[100%] left-[50%] w-[100%]"
+            style="transform: translate(-50%, -50%);">
+            二次风侧<br />最高阻力</div>
+        </div>
       </div>
-    </div>
-    <div class="absolute w-[100px] left-[24%] top-[36%]">
-      <div class="relative">
-        <img src="/images/arrow.svg" class="" 
-        :style="`transform:rotateZ(${dataInfo.SA_Inlet_Pressure.value- Math.abs(dataInfo.SA_Outlet_Pressure.value)>0?-90:90}deg)`">
-        <div class="text-[16px] text-[#fff] text-center absolute top-[100%] left-[50%] w-[100%]" 
-        style="transform: translate(-50%, -50%);">
-        一次风侧<br />最高阻力</div>
+      <div class="absolute w-[100px]  z-10 left-[14%] top-[20%]">
+        <div class="relative">
+          <img src="/images/arrow.svg" class=""
+            :style="`transform:rotateZ(${dataInfo.SA_Inlet_Pressure.value - Math.abs(dataInfo.SA_Outlet_Pressure.value) > 0 ? -90 : 90}deg)`">
+          <div class="text-[16px] text-[#fff] text-center absolute top-[100%] left-[50%] w-[100%]"
+            style="transform: translate(-50%, -50%);">
+            一次风侧<br />最高阻力</div>
+        </div>
       </div>
-    </div>
-    <div class="absolute w-[100px] right-[24%] bottom-[30%]">
-      <div class="relative">
-        <img src="/images/arrow.svg" class="" 
-        :style="`transform:rotateZ(${dataInfo.Gas_Inlet_Pressure.value- Math.abs(dataInfo.Gas_Outlet_Pressure.value)>0?90:-90}deg)`">
-        <div class="text-[16px] text-[#fff] text-center absolute top-[100%] left-[50%] w-[100%]" 
-        style="transform: translate(-50%, -50%);">
-        烟气侧<br />最高阻力</div>
+      <div class="absolute w-[100px] z-10  right-[18%] bottom-[20%]">
+        <div class="relative">
+          <img src="/images/arrow.svg" class=""
+            :style="`transform:rotateZ(${dataInfo.Gas_Inlet_Pressure.value - Math.abs(dataInfo.Gas_Outlet_Pressure.value) > 0 ? 90 : -90}deg)`">
+          <div class="text-[16px] text-[#fff] text-center absolute top-[100%] left-[50%] w-[100%]"
+            style="transform: translate(-50%, -50%);">
+            烟气侧<br />最高阻力</div>
+        </div>
       </div>
+      <img src="/images/fengji.png" style=" transform: translate(-50%, -50%);height: 100%"  class="absolute h-[380px] top-[50%] left-[50%] "/>
     </div>
-   
-    <img src="/images/fengji.png" style="margin: 0 auto; height: 100%" />
+
     <div class="absolute top-[0px] w-full h-full flex justify-between" style="background: rgba(169, 181, 188, 0.08)">
       <template v-for="index in [0, 1]">
         <div>
