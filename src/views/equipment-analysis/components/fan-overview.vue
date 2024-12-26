@@ -1,67 +1,56 @@
 <template>
   <div class="relative h-full">
-    <svg
-      class="absolute top-[10px] left-[50%] ml-[-25px]"
-      width="50"
-      height="50"
-      viewBox="0 0 100 100"
-      xmlns="http://www.w3.org/2000/svg"
-      style="transform: rotate3d(7, -7, -4, -65deg)"
-    >
-      <!-- 定义箭头 -->
-      <defs>
-        <marker
-          id="arrowhead"
-          markerWidth="20"
-          markerHeight="14"
-          refX="5"
-          refY="2.5"
-          orient="auto"
-        >
-          <polygon points="0 0, 10 3.5, 0 7" fill="#f2a" />
-        </marker>
-      </defs>
-      <!-- 圆环路径 -->
-      <path v-if="dataInfo.PA_Outlet_Temperture.value<dataInfo.SA_Outlet_Temperture.value"
-        d="M 50 10 A 40 40 0 1 1 49.9 10"
-        fill="none"
-        stroke="black"
-        stroke-width="3"
-        marker-end="url(#arrowhead)"
-      />
-      <path v-else
-    d="M 50 90 A 40 40 0 1 1 50.1 90"
-    fill="none"
-    stroke="black"
-    stroke-width="3"
-    marker-end="url(#arrowhead)"
-  />
-    </svg>
-    <img src="/images/fengji.jpg" style="margin: 0 auto; height: 100%" />
-    <div
-      class="absolute top-[0px] w-full h-full flex justify-between"
-      style="background: rgba(169, 181, 188, 0.08)"
-    >
+    <div class="absolute w-[100px]  left-[50%] top-[30%] ml-[-50px]">
+      <div class="relative">
+        <img src="/images/arrow_rotating.svg"
+          :style="`transform:rotateX(${dataInfo.PA_Outlet_Temperture.value < dataInfo.SA_Outlet_Temperture.value ? 40 : -140}deg)`">
+        <div class="text-[16px] text-[#fff] text-center absolute top-[50%] left-[50%] w-[100%]" 
+        style="transform: translate(-50%, -50%);">
+          预热器<br />旋转方向</div>
+      </div>
+    </div>
+    <div class="absolute w-[100px] left-[60%] top-[18%]">
+      <div class="relative">
+        <img src="/images/arrow.svg"  :style="`transform:rotateZ(${dataInfo.PA_Inlet_Pressure.value- Math.abs(dataInfo.PA_Outlet_Pressure.value)>0?-90:90}deg)`">
+        <div class="text-[16px] text-[#fff] text-center absolute top-[100%] left-[50%] w-[100%]" 
+        style="transform: translate(-50%, -50%);">
+        二次风侧<br />最高阻力</div>
+      </div>
+    </div>
+    <div class="absolute w-[100px] left-[24%] top-[36%]">
+      <div class="relative">
+        <img src="/images/arrow.svg" class="" 
+        :style="`transform:rotateZ(${dataInfo.SA_Inlet_Pressure.value- Math.abs(dataInfo.SA_Outlet_Pressure.value)>0?-90:90}deg)`">
+        <div class="text-[16px] text-[#fff] text-center absolute top-[100%] left-[50%] w-[100%]" 
+        style="transform: translate(-50%, -50%);">
+        一次风侧<br />最高阻力</div>
+      </div>
+    </div>
+    <div class="absolute w-[100px] right-[24%] bottom-[30%]">
+      <div class="relative">
+        <img src="/images/arrow.svg" class="" 
+        :style="`transform:rotateZ(${dataInfo.Gas_Inlet_Pressure.value- Math.abs(dataInfo.Gas_Outlet_Pressure.value)>0?90:-90}deg)`">
+        <div class="text-[16px] text-[#fff] text-center absolute top-[100%] left-[50%] w-[100%]" 
+        style="transform: translate(-50%, -50%);">
+        烟气侧<br />最高阻力</div>
+      </div>
+    </div>
+   
+    <img src="/images/fengji.png" style="margin: 0 auto; height: 100%" />
+    <div class="absolute top-[0px] w-full h-full flex justify-between" style="background: rgba(169, 181, 188, 0.08)">
       <template v-for="index in [0, 1]">
         <div>
-          <template
-            v-for="item in dataInfoList.slice(4 * index, 4 * (index + 1))"
-          >
-            <div
-              class="p-[10px] rounded-[8px] w-[150px] m-5"
-              style="
+          <template v-for="item in dataInfoList.slice(4 * index, 4 * (index + 1))">
+            <div class="p-[10px] rounded-[8px] w-[150px] m-5" style="
                 background: rgba(255, 255, 255, 0.78);
                 box-shadow: 0px 2px 10px 0px rgba(72, 111, 133, 0.13);
-              "
-            >
+              ">
               <div class="mb-2 text-[12px]">{{ item.name }}</div>
               <div class="flex h-[26px] items-center">
                 <div class="flex items-center">
                   <img :src="`/images/${item.icon}`" class="w-[18px]" />
                 </div>
-                <div
-                  class="flex border border-solid border-[#0087d3] ml-1 rounded-lg overflow-hidden"
-                >
+                <div class="flex border border-solid border-[#0087d3] ml-1 rounded-lg overflow-hidden">
                   <div class="bg-white w-[70px] px-[6px] text-[14px]">
                     {{ item.value }}{{ item.unit }}
                   </div>
@@ -123,13 +112,31 @@ let dataInfo = ref({
     icon: "device2.png",
   },
   Gas_Inlet_Pressure: {
-    name: "转速", //未知
+    name: "烟气侧入口阻力", //未知
     value: 32,
     unit: "m/s",
     icon: "device3.png",
   },
-  PA_Outlet_Temperture:{
-    show:false,
+  Gas_Outlet_Pressure: {
+    name: "烟气侧出口阻力", //未知
+    value: 32,
+    unit: "m/s",
+    icon: "device3.png",
+  },
+  SA_Inlet_Pressure: {
+    name: "一次风侧入口阻力", //未知
+    value: 32,
+    unit: "m/s",
+    icon: "device3.png",
+  },
+  SA_Outlet_Pressure: {
+    name: "一次风侧出口阻力", //未知
+    value: 32,
+    unit: "m/s",
+    icon: "device3.png",
+  },
+  PA_Outlet_Temperture: {
+    show: false,
     name: "二次烟气入口温度", //未知
     value: 32,
     unit: "m/s",
@@ -143,7 +150,7 @@ const props = defineProps({
   },
 });
 const dataInfoList = computed(() => {
-  return values(dataInfo.value).filter(item=>item.show!=false);
+  return values(dataInfo.value).filter(item => item.show != false);
 });
 const getDeviceAV = (deviceName) => {
   let output = keys(dataInfo.value);

@@ -103,13 +103,13 @@
                     >
                       壁温趋势分析
                     </p>
-                    <p
+                    <p v-if="false"
                       style="cursor: pointer"
                       @click="handleAclick('/energy/' + state.deviceType)"
                     >
                       能耗分析
                     </p>
-                    <p
+                    <p v-if="false"
                       style="cursor: pointer"
                       @click="handleAclick('/analysis/' + state.deviceType)"
                     >
@@ -221,7 +221,7 @@ const getDeviceAV = async (deviceName) => {
   return {
     deviceName,
     state: res.data.length == 0 ? "3" : node.unitLoad > 100 ? "1" : "2",
-    percent100: node.unitLoad > 600 ? 1 : 0,
+    percent100: node?.unitLoad > 600 ? 1 : 0,
     percent90: res.data.length == 0 ? "3" : node.unitLoad > 100 ? "1" : "2",
     percent75: res.data.length == 0 ? "3" : node.unitLoad > 100 ? "1" : "2",
     percent50: res.data.length == 0 ? "3" : node.unitLoad > 100 ? "1" : "2",

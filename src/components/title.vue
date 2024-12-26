@@ -24,6 +24,7 @@ const props = defineProps({
 
 <style lang="less" scoped>
 .echats-title {
+  z-index: 99;
   &-border {
     width: 3px;
     height: 12px;

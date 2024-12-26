@@ -8,17 +8,18 @@
         :options="deviceInfoOp"
       ></a-select>
     </div>
-    <div class="flex justify-end">
-      <div class="flex flex-wrap w-[530px]" v-if="dataItem">
+    <div class="flex pt-5 flex-col mb-[5px]">
+      <span class="text-[18px] mx-2">燃煤情况分析</span>
+      <div class="flex flex-wrap " v-if="dataItem">
         <div
           v-for="item in optionsPm.slice(1)"
-          class="flex flex-col text-[16px] w-[33.3%]"
+          class="flex flex-col text-[16px] mx-2 "
         >
-          <span>{{ item.label }}：{{ dataItem[item.value] }}</span>
+          <span>{{ item.label }}：{{ dataItem[item.value] }}{{ item.p }}</span>
         </div>
       </div>
     </div>
-    <div style="height:calc(100% - 32px)">
+    <div style="height:calc(100% - 60px)">
     <Line :option="option" ref="echartComponent" />
     </div>
   </div>
@@ -39,23 +40,28 @@ let optionsPm = ref([
   {
     label: "煤基灰分",
     value: "Aar",
+    p:'%'
   },
   {
     label: "烟气含氧量",
     value: "O2",
+    p:'%'
   },
   {
     label: "转化率 ",
     value: "Convscr",
+    p:'%'
   },
   {
     label: "煤基地位发热量",
     value: "Qetar",
+    p:'Kcal'
   },
 
   {
     label: "煤基硫分",
     value: "Sar",
+    p:'%'
   },
 ]);
 let option = ref({

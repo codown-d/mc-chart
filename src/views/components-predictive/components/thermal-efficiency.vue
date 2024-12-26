@@ -49,8 +49,8 @@ let option = ref({
       { offset: 0, color: "rgba(0, 128, 0, 0.1)" }, // 渐变结束色
     ]),
     borderWidth: 0,
-    left: "4%",
-    right: "6%",
+    left: "6%",
+    right: "0%",
     top: "15%",
     bottom: "12%",
   },

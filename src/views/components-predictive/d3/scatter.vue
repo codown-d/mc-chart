@@ -1,7 +1,7 @@
 <template>
   <div class="relative w-full h-full">
     <div class="flex">
-      <div class='flex items-center mb-4' 
+      <div class='flex items-center mb-4 text-[16px]' 
       v-for="item in legendList">
         <div class="w-4 h-4 mx-3" :style="'background:'+item?.color"></div> {{ item?.label }}
       </div>

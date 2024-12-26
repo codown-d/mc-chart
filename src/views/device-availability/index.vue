@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="h-[50%] p-[10px] bg-white my-5 relative">
-          <pangge-Title text="冷端综合温度历史趋势" class="mb-[10px] absolute"></pangge-Title>
+          <pangge-Title text="空预器冷端综合温度统计" class="mb-[10px] absolute"></pangge-Title>
           <div style="height:calc(100%)">
             <ScatterContour />
           </div>
@@ -57,35 +57,6 @@ import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import { keys, values } from 'lodash'
 import { useRoute } from 'vue-router';
 const route = useRoute();
-const routeParams = route.params;
-let dataInfo = ref({
-  z: {
-    name: "X占比",
-    value: 100
-  },
-  b: {
-    name: "满负荷运行时间占比",
-    value: 200
-  },
-  c: {
-    name: "运行时间占比",
-    value: 300
-  }, d: {
-    name: "告警事件",
-    value: 400
-  }, e: {
-    name: "故障事件",
-    value: 400
-  }
-})
-let hideModal = () => { };
-const dateFormat = "YYYY/MM/DD";
-const state = reactive({
-  deviceId: "",
-  deviceType: "",
-  deviceName: "",
-  msg: "",
-});
 
 let valueLine = ref();
 let { deviceInfoList } = useDeviceInfo();

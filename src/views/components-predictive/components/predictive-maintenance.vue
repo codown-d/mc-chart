@@ -1,8 +1,8 @@
 <template>
-  <div style="height: calc(100% - 35px)" class="relative flex">
+  <div style="height: calc(100%)" class="relative flex">
     <Line :option="option" ref="echartComponent" />
   </div>
-  <div class="h-[35px]">
+  <div class="h-[35px]" v-show="false">
     <Bar :option="optionBar" ref="echartComponentBar" />
   </div>
 </template>
@@ -38,9 +38,33 @@ let option = ref({
     ]),
     borderWidth: 0,
     left: "160px",
-    right: "4%",
+    right: "0%",
     top: "10%",
     bottom: "2%",
+  },
+  visualMap: {
+    seriesIndex: [1],
+    show: false,
+    pieces: [
+      {
+        gt: 0,
+        lte: 0.15,
+        color: '#ab0404'
+      },
+      {
+        gt: 0.15,
+        lte: 0.25,
+        color: '#ffed00'
+      },
+      {
+        gt: 0.25,
+        lte: 1,
+        color: '#09ae3a'
+      },
+    ],
+    outOfRange: {
+      color: '#999'
+    }
   },
   legend: [
     {
@@ -51,17 +75,7 @@ let option = ref({
       itemWidth: 20, // 横线的宽度
       itemHeight: 2, // 横线的高度
       data: ["参考衰减趋势", "实际衰减趋势"],
-    },
-    {
-      left: "1%", // 将图例放在左侧
-      top: "100px",
-      orient: "vertical", // 设置图例垂直排列
-      icon: "rect", // 使用矩形代替默认图标
-      itemWidth: 20, // 横线的宽度
-      itemHeight: 10, // 横线的高度
-      data: ["预防性周期时间", "告警区间", "危险区间"],
-      selectedMode: false, //
-    },
+    }
   ],
   xAxis: [
     {
@@ -121,19 +135,23 @@ const getDeviceAV = (deviceName) => {
     console.log(res);
     const chartInstance = echartComponent.value.getChartInstance();
     let data = res.data;
-    let last = data.at(-1).timestamp;
+    let lastNode = data.at(-1)
+    let last = lastNode.timestamp;
     let startT = dayjs(data[0].timestamp).valueOf();
-    let endT = dayjs(last.Predictendtime).valueOf();
-    let endedT = dayjs(last.Max_date).valueOf();
-    let samples = sampleByPercentage(startT, endT, [75, 15]);
-    console.log(samples);
+    let endT = dayjs(lastNode.timestamp).add(30, 'day').valueOf();
+    // let endT = dayjs(lastNode.Max_date).valueOf();
     let midT = dayjs((startT + endT) / 2).valueOf();
+    const date1 = dayjs(data[0].timestamp);
+    const date2 = dayjs(data[0].Max_date);
+    const diffInDays = date2.diff(date1, 'day');
+    let day = dayjs(endT).diff(date1, 'day');
+    let node = day / diffInDays
     chartInstance.setOption(
       merge({}, option.value, {
         xAxis: [
           {
             min: startT,
-            max: endedT,
+            max: endT,
           },
         ],
         series: [
@@ -144,29 +162,39 @@ const getDeviceAV = (deviceName) => {
             smooth: true,
             data: [
               [startT, 1],
-              [midT, 0.8],
-              [endT, 0],
+              [midT, (1 + 1 - node) / 2 + 0.1],
+              [endT, 1 - node],
             ],
-            //   // markLine: {
-            //   //   silent: true,
-            //   //   label: {
-            //   //     show: true,
-            //   //     formatter: "{b}:{c}",
-            //   //   },
-            //   //   lineStyle: {
-            //   //     color: "#333",
-            //   //   },
-            //   //   data: [
-            //   //     {
-            //   //       yAxis: 0.3,
-            //   //       name: "最小值",
-            //   //     },
-            //   //     {
-            //   //       yAxis: 0.9,
-            //   //       name: "最大值",
-            //   //     },
-            //   //   ],
-            //   // },
+            markLine: {
+              data: [
+                {
+                  yAxis: 0.15,
+                  name: "危险线",
+                  label: {
+                    position: "start",
+                    formatter: '{b}: {c}'  // 格式化标线标签
+                  },
+                  lineStyle: {
+                    color: "#ff0000", // 红色线
+                    width: 1,
+                    type: "dashed", // 虚线
+                  },
+                },
+                {
+                  yAxis: 0.25,
+                  name: "告警线",
+                  label: {
+                    position: "start",
+                    formatter: '{b}: {c}'  // 格式化标线标签
+                  },
+                  lineStyle: {
+                    color: "#ffed00", // 红色线
+                    width: 1,
+                    type: "dashed", // 虚线
+                  },
+                },
+              ],
+            },
           },
           {
             name: "实际衰减趋势",
@@ -200,35 +228,6 @@ const getDeviceAV = (deviceName) => {
                 show: true,
                 position: "start", // 标签显示在竖线的开始位置
               },
-            },
-          },
-          {
-            name: "正常区间",
-            data: [],
-            type: "line", // 或者其他类型，随意设置
-            silent: true, // 使得此系列不显示实际图形
-            itemStyle: {
-              color: "#09ae3a", // 设置 Bar Group 1 的颜色
-            },
-          },
-
-          {
-            name: "告警区间",
-            data: [],
-            type: "line", // 或者其他类型，随意设置
-            silent: true, // 使得此系列不显示实际图形
-            itemStyle: {
-              color: "#ffed00", // 设置 Bar Group 1 的颜色
-            },
-          },
-
-          {
-            name: "危险区间",
-            data: [],
-            type: "line", // 或者其他类型，随意设置
-            silent: true, // 使得此系列不显示实际图形
-            itemStyle: {
-              color: "#ab0404", // 设置 Bar Group 1 的颜色
             },
           },
 
