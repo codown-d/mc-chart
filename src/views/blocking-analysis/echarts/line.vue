@@ -15,6 +15,7 @@ import { useRoute, useRouter } from "vue-router";
 import { Select, SelectOption, Pagination, Popover } from "ant-design-vue";
 import * as echarts from "echarts";
 import { merge } from "lodash";
+import dayjs from "dayjs";
 const barChart = ref(null);
 const myChart = ref(null);
 
@@ -43,6 +44,16 @@ const option = {
   tooltip: {
     trigger: "axis",
   },
+  xAxis: [
+    {
+      axisLabel: {
+        formatter: function (value) {
+          return dayjs(value).format('YY/M/D HH:mm');
+        },
+        // rotate: 45,  
+      }
+    }
+  ],
   grid: {
     left: "8%",
     right: "6%",

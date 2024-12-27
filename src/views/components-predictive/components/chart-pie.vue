@@ -70,7 +70,7 @@ const getDeviceAV = (deviceName) => {
           {
             data: [
               { value: 1 - node.totallyproportion, name: "un-totallyproportion",itemStyle: { color: '#b92c2c' } },
-              { value: node.totallyproportion, name: "totallyproportion",itemStyle: { color: '#54b92c' } },
+              { value: node.totallyproportion, name: "totallyproportion",itemStyle: { color: '#d42014' } },
             ],
           },
         ],
