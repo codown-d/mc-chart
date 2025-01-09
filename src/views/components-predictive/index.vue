@@ -36,7 +36,7 @@
         </div>
         <div class="h-[50%] my-5 flex" style="height: calc(50% - 40px)">
           <div class="w-[100%] bg-white  p-4 pb-0 relative">
-            <pangge-Title text="热销能状态分析" class="mb-[10px] absolute"></pangge-Title>
+            <pangge-Title text="热效能状态分析" class="mb-[10px] absolute"></pangge-Title>
             <ThermalEfficiency />
           </div>
         </div>

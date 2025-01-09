@@ -49,29 +49,29 @@ const getDeviceAV = (deviceName) => {
     // timeEnd: dayjs(),
     timeFrom: "2013-01-02T23:59:59+08:00",
     timeEnd: "2013-03-02T00:00:00+08:00",
-    output: [
-      {
-        field: "X_Value",
-        func: "sum",
-      },
-      {
-        field: "leak",
-        func: "sum",
-      },
-      {
-        field: "Inlet_O2",
-        func: "sum",
-      },
-      {
-        field: "Outlet_O2",
-        func: "sum",
-      },
-    ],
-    group: {
-      timeInterval: 60 * 24 * 60 * 60,
-    },
+    // output: [
+    //   {
+    //     field: "X_Value",
+    //     func: "sum",
+    //   },
+    //   {
+    //     field: "leak",
+    //     func: "sum",
+    //   },
+    //   {
+    //     field: "Inlet_O2",
+    //     func: "sum",
+    //   },
+    //   {
+    //     field: "Outlet_O2",
+    //     func: "sum",
+    //   },
+    // ],
+    // group: {
+    //   timeInterval: 60 * 24 * 60 * 60,
+    // },
   };
-  API.getDataAgg(params).then((res) => {
+  API.getData(params).then((res) => {
     deviceData.value = res.data;
     let node = res.data[0];
     dataInfo.value = node
