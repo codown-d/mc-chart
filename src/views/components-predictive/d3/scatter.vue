@@ -68,12 +68,6 @@ const drawChart = () => {
       tickPadding: 10,
     },
     marks: [
-      Plot.contour(data.values, {
-        width: data.width,
-        height: data.height,
-        fill: Plot.identity,
-        stroke: "black",
-      }),
       Plot.dot(pointSets, {
         x: 'x',
         y: 'y',

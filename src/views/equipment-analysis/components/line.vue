@@ -31,7 +31,12 @@ let option = ref({
   ],
   series: [],
 });
-
+const props = defineProps({
+  loadIndex: {
+        type: Number,
+        default: 1,
+    },
+});
 let { deviceInfoOp } = useDeviceInfo();
 watch(deviceInfoOp, (data) => {
   valueLine.value = data[0].value;
@@ -47,7 +52,8 @@ const getDeviceAV = (deviceName) => {
   };
   API.getData(params).then((res) => {
     const chartInstance = echartComponent.value.getChartInstance();
-    let data = res.data;
+    console.log(res.data)
+    let data = res.data.filter(item=>item.loadindex==props.loadIndex);
     chartInstance.setOption(
       merge({}, option.value, {
         series: [

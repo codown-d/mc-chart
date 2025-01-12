@@ -17,7 +17,7 @@
         </div>
         <div class="px-4 flex h-full" style="height: calc(45% );">
           <div class="w-[60%] h-full">
-            <ScatterContour />
+            <BlowingSystem />
           </div>
           <div class="flex-1 relative h-full">
             <pangge-Title text="吹灰系统异常占比" class="mb-[10px] absolute ml-5"></pangge-Title>
@@ -50,6 +50,7 @@
 <script setup>
 import { onMounted, reactive, ref, nextTick } from "vue";
 import PredictiveMaintenance from "./components/predictive-maintenance.vue";
+import BlowingSystem from "./components/blowing-system.vue";
 import ScatterContour from "./components/scatter-contour.vue";
 import ChartPie from "./components/chart-pie.vue";
 import ChartLine from "./components/chart-line.vue";

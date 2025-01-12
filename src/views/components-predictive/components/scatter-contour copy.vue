@@ -14,6 +14,7 @@ import Scatter from "../d3/scatter.vue";
 import API from "@/api_v2";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import data from "../data/volcano.js";
+import { ConsoleSqlOutlined } from "@ant-design/icons-vue";
 const echartComponent = ref(null);
 let valueLine = ref();
 let pointSets = ref([]);

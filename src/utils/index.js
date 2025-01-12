@@ -1,5 +1,4 @@
-
-import { countBy,merge, keys } from "lodash";
+import { countBy, merge, keys } from "lodash";
 import API from "@/api";
 export function sampleByPercentage(start, end, percentages) {
   // 确保输入是有效的数字区间
@@ -17,7 +16,7 @@ export function sampleByPercentage(start, end, percentages) {
 
   return result;
 }
-export  function generateData(startTime, endTime, numPoints) {
+export function generateData(startTime, endTime, numPoints) {
   // 起始时间和截止时间的毫秒数
   let startMs = new Date(startTime).getTime();
   let endMs = new Date(endTime).getTime();
@@ -55,7 +54,7 @@ export  function generateData(startTime, endTime, numPoints) {
 
   return data;
 }
-export  function generateRandomPoints(startTime, endTime, numPoints) {
+export function generateRandomPoints(startTime, endTime, numPoints) {
   // 起始时间和截止时间的毫秒数
   let startMs = new Date(startTime).getTime();
   let endMs = new Date(endTime).getTime();
@@ -80,7 +79,7 @@ export  function generateRandomPoints(startTime, endTime, numPoints) {
   return data;
 }
 
-export  const useCulPercent=(data) => {
+export const useCulPercent = (data) => {
   let arr = data.map((item) => {
     let percent;
     if (item.unitLoad / 6 > 100) {
@@ -98,20 +97,25 @@ export  const useCulPercent=(data) => {
   });
   const totalCount = arr.length;
   const categoryCount = countBy(arr, "percent");
-  return keys(categoryCount).map((count) => ({
-    percent: count,
-    percentage: ((categoryCount[count] / totalCount) * 100).toFixed(2),
-    name: count,
-    value:Number(((categoryCount[count] / totalCount) * 100).toFixed(2))
-  }));
+
+  return keys(categoryCount).map((count) => {
+    let value =  Number(((categoryCount[count] / totalCount) * 100).toFixed(2))
+
+    return {
+      percent: count,
+      percentage: ((categoryCount[count] / totalCount) * 100).toFixed(2),
+      name: count,
+      value:value,
+    };
+  });
 };
 
-export const setWebPath = (url='/welcome')=>{
+export const setWebPath = (url = "/welcome") => {
   const data = {
     id: 1,
-    urlPath: url
-  }
+    urlPath: url,
+  };
   API.setWebPath(data).then((res) => {
     console.log("res ", res);
-  })
-}
+  });
+};

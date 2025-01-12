@@ -1,16 +1,7 @@
 <template>
   <div class="relative w-full h-full overflow-hidden">
-    <img
-      src="/images/bw.png"
-      alt=""
-      class="absolute w-full h-full top-0 left-0"
-    />
-    <div
-      class="chart w-full h-full"
-      id="myCanvas"
-      :class="class"
-      ref="barChart"
-    ></div>
+    <img src="/images/bw.png" alt="" class="absolute w-full h-full top-0 left-0" />
+    <div class="chart w-full h-full" id="myCanvas" :class="class" ref="barChart"></div>
   </div>
 </template>
 <script setup lang="ts">
@@ -43,10 +34,11 @@ let init = () => {
       formatter: "{b}°C", // 显示百分比
     },
     grid: {
-      left: "5%",
-      top: "41%",
-      bottom: "28%",
-      right: "14%",
+      height: '100%',
+      left: '0%',
+      right: '0%',
+      top: '0%',
+      bottom: "0%",
     },
     legend: {
       bottom: "0%",

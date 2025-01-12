@@ -5,7 +5,7 @@
         <Chart :list="list" :data="item" :device_info="props.device_info" />
       </div>
       <div class="flex-1">
-        <Line :data="item" />
+        <Line :data="item" :loadIndex="index+1" />
       </div>
     </div>
   </div>
@@ -37,6 +37,7 @@ const getDeviceAV = async (deviceName) => {
   };
   let res = await API.getData(params);
   list.value = useCulPercent(res.data);
+  console.log(list)
 };
 onMounted(() => {
   getDeviceAV(props.device_info.Device_Name);
