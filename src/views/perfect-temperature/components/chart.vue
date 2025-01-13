@@ -46,17 +46,19 @@ let optionLine = ref({
       type: "category",
       boundaryGap: false,
       position: "top", // x 轴放到顶部
+      show:false
     },
   ],
   grid: {
-    left: "0%",
-    top: "0%",
-    right: '0%',
-    bottom: '0%'
+    right: "12%",
+    left: "12%",
+    top: "42%",
+    bottom: "28%",
   },
   yAxis: [
     {
       type: "category",
+      show:false
     },
   ],
   series: [],
@@ -72,10 +74,10 @@ let option = ref({
     },
   },
   grid: {
-    height: "100%",
-    width: "100%",
-    left: "0%",
-    top: "0%",
+    right: "12%",
+    left: "12%",
+    top: "42%",
+    bottom: "28%",
   },
   yAxis: {
     show: false,
