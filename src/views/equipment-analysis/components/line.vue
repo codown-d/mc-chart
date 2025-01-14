@@ -16,11 +16,18 @@ let option = ref({
   xAxis: [
     {
       type: "time",
-      boundaryGap: false,
-      show: false,
-      position: "top", 
+      axisLabel: {
+      formatter: function (value) {
+        const date = new Date(value);
+        return dayjs(date).format("MM/D HH:mm")
+      },
+    },
     },
   ],
+  legend: {
+    top: '5%', // 图例显示在上方，距离容器顶部 5%
+    left: 'center', // 图例居中
+  },
   yAxis: [
     {
       type: "value",

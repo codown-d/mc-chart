@@ -69,8 +69,8 @@ const getDeviceAV = (deviceName) => {
         series: [
           {
             data: [
-              { value: 1 - node.totallyproportion, name: "un-totallyproportion",itemStyle: { color: '#b92c2c' } },
-              { value: node.totallyproportion, name: "totallyproportion",itemStyle: { color: '#d42014' } },
+              { value: 1 - node.totallyproportion, name: "un-totallyproportion",itemStyle: { color: '#bc3636' } },
+              { value: node.totallyproportion, name: "totallyproportion",itemStyle: { color: '#b96c6c' } },
             ],
           },
         ],

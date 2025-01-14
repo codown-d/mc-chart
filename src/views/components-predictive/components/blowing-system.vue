@@ -77,9 +77,9 @@ const getDeviceAV = async (deviceName) => {
   let arr1 = blowHistory.data.map((item) => {
     return {
       ...item,
-      x: item.history_t * 10,
+      x: item.history_t,
       y: item.history_v,
-      color: "#0f0",
+      color: "#284ed4",
     };
   });
   var params = {
@@ -94,35 +94,35 @@ const getDeviceAV = async (deviceName) => {
   let arr2 = blowRecently.data.map((item) => {
     return {
       ...item,
-      x: item.recently_t * 10,
+      x: item.recently_t,
       y: item.recently_v,
-      color: "#ff0",
+      color: "#d3ca1c",
     };
   });
   console.log([...arr1, ...arr2]);
   // pointSets.value = [...arr1, ...arr2];
-  init([...arr1, ...arr2]);
+  init( [...arr1, ...arr2]);
 };
 let init = (circleList) => {
   // 创建SVG容器
   const chartElement = d3.select("#chart").node();
   const { width, height } = chartElement.getBoundingClientRect();
-  const margin = { top: 0, right: 0, bottom: 30, left: 32 };
+  const margin = { top: 0, right: 0, bottom: 40, left: 32 };
 
   const svg = d3
     .select("#chart")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom);
+    .attr("width", width)
+    .attr("height", height);
 
   // 定义y轴的比例尺
-  let ys = [6, 16];
+  let ys = [0, 16];
   const yScale = d3
     .scaleLinear()
     .domain(ys) // y轴的值范围
     .range([height - margin.bottom, margin.top]);
 
-  let xs = [200, 380];
+  let xs = [100, 400];
   const xScale = d3
     .scaleLinear()
     .domain(xs) // y轴的值范围
@@ -151,17 +151,10 @@ let init = (circleList) => {
   svg
     .append("rect")
     .attr("x", margin.left)
-    .attr("y", yScale(10)) // y轴9到10的开始位置
+    .attr("y", yScale(ys[1])) // y轴9到10的开始位置
     .attr("width", width - margin.left - margin.right)
-    .attr("height", yScale(9) - yScale(10)) // 高度是10到9的区间
-    .attr("fill", "#ba4040"); // 填充红色
-  svg
-    .append("rect")
-    .attr("x", margin.left) // 设置矩形的左边距
-    .attr("y", yScale(ys[1])) // y轴8到9的开始位置
-    .attr("width", width - margin.left - margin.right) // 矩形的宽度
-    .attr("height", yScale(10) - yScale(ys[1])) // 高度是9到8的区间
-    .attr("fill", "#ba4040"); // 填充黄色
+    .attr("height", yScale(9) - yScale(ys[1])) // 高度是10到9的区间
+    .attr("fill", "#b96c6c"); // 填充红色
   // 添加y轴
   svg.append("g").attr("transform", `translate(${margin.left}, 0)`).call(yAxis);
   svg
@@ -169,11 +162,13 @@ let init = (circleList) => {
     .attr("transform", `translate(0, ${height - margin.bottom})`)
     .call(xAxis);
   // 添加折线图数据
-  const data = [
-    { x: 280, y: 6 },
-    { x: 290, y: 9.5 },
-    { x: 300, y: 10 },
-    { x: xs[1], y: 10 },
+  const data = [{
+    x: 260, y: 0
+  },
+  { x: 280, y: 6 },
+  { x: 290, y: 9.5 },
+  { x: 300, y: 10 },
+  { x: xs[1], y: 10 },
   ];
 
   const line = d3
@@ -193,7 +188,7 @@ let init = (circleList) => {
     .data([[...data]])
     .attr("class", "area")
     .attr("d", area) // 使用area生成区域路径
-    .attr("fill", "green"); // 设置填充颜色为绿色
+    .attr("fill", "#65974a"); // 设置填充颜色为绿色
 
   svg
     .append("path")
@@ -203,7 +198,6 @@ let init = (circleList) => {
     .attr("fill", "none")
     .attr("stroke", "blue")
     .attr("stroke-width", 1);
-  console.log(circleList)
   svg
     .selectAll("circle")
     .data(circleList)
@@ -214,20 +208,31 @@ let init = (circleList) => {
     .attr("r", 5) // 设置圆点的半径
     .attr("fill", d => d.color); // 设置圆点的颜色
   svg.append("text")
-    .attr("x", width)  // 水平居中
+    .attr("x", width - 20)  // 水平居中
     .attr("y", height - margin.bottom / 4)  // 设置位置稍微偏离底部
     .attr("text-anchor", "middle")  // 水平居中对齐
     .attr("font-size", "8px")
     .attr("fill", "black")  // 字体颜色
     .text("温度P");  // 横坐标标题
-    svg.append("text")
-  .attr("x", -10)  // 设置位置稍微偏离左边
-  .attr("y", 8)  // 垂直居中
-  .attr("transform", "rotate(-90)")  // 旋转文字为垂直显示
-  .attr("text-anchor", "middle")  // 水平居中对齐
-  .attr("font-size", "8px")
-  .attr("fill", "black")  // 字体颜色
-  .text("压力V");  // 纵坐标标题
+  svg.append("text")
+    .attr("x", -10)  // 设置位置稍微偏离左边
+    .attr("y", 8)  // 垂直居中
+    .attr("transform", "rotate(-90)")  // 旋转文字为垂直显示
+    .attr("text-anchor", "middle")  // 水平居中对齐
+    .attr("font-size", "8px")
+    .attr("fill", "black")  // 字体颜色
+    .text("压力V");  // 纵坐标标题
+  [{ color: '#d3ca1c', title: '最近数据' }, { color: '#284ed4', title: '历史数据' }].map((item,index) => {
+    let g = svg.append('g').attr("transform", `translate(${index*60+50}, ${height-10})`)
+    g.append("circle")
+      .attr("r", 6) // 设置圆点的半径
+      .attr("fill", d => item.color); // 设置圆点的颜色
+    g.append("text")
+      .attr("transform", `translate(${10}, ${4})`)
+      .attr("font-size", "10px")
+      .attr("fill", "black")  // 字体颜色
+      .text(item.title);  // 纵坐标标题
+  })
 };
 watch(valueLine, (data) => {
   getDeviceAV(data);
