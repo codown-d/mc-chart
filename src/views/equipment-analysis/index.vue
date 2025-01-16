@@ -236,6 +236,6 @@ watch(deviceInfoList, (newValue) => {
   );
 });
 onMounted(() => {
-  setWebPath()
+  setWebPath('/new-child/' + route.params.deviceType + '/1')
 });
 </script>

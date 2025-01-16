@@ -48,6 +48,6 @@ const state = reactive({
 let { deviceInfoList } = useDeviceInfo();
 const route = useRoute();
 onMounted(() => {
-  setWebPath('/child/' + route.params.deviceType + '/1')
+  setWebPath('/new-child/' + route.params.deviceType + '/1')
 });
 </script>

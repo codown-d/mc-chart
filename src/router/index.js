@@ -11,6 +11,7 @@ import DeviceAvailability from '@/views/device-availability/index.vue'
 import EnergyPage from '@/views/energy/index.vue'
 import Equipment from '@/views/equipment/index.vue'
 import Child from '@/views/child.vue'
+import NewChild from '@/views/new-child.vue'
 import Prediction from '@/views/prediction/index.vue'
 import BlockingAnalysis from '@/views/blocking-analysis/index.vue'
 import Preventive from '@/views/preventive/index.vue'
@@ -79,6 +80,12 @@ const router = createRouter({
       path: '/child/:deviceType/:mode',
       name: 'child',
       component: Child,
+      props: true
+    },
+    {
+      path: '/new-child/:deviceType/:mode',
+      name: 'new-child',
+      component: NewChild,
       props: true
     },
     {

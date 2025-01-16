@@ -144,7 +144,7 @@ const handSetWebPath = (url) => {
         <div class="align-end">
           <!-- <img class="container-header-right-install pointer" @click="state.recommenOpen = true"
             src="/images/install.png" /> -->
-          <img class="container-header-right-home pointer" @click="handleRouter('/overview/' + state.deviceType)" src="/images/home.png" />
+          <img class="container-header-right-home pointer" @click="handleRouter('/')" src="/images/home.png" />
         </div>
         <div class="flex-items container-header-right-border"></div>
         <img class="container-header-right-user pointer" src="/images/user.png" />

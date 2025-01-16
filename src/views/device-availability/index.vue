@@ -70,11 +70,15 @@ import ThermalEfficiency from "./components/thermal-efficiency.vue";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
 import { keys, values } from "lodash";
 import { useRoute } from "vue-router";
-const route = useRoute();
+import { setWebPath } from "@/utils";
 
 let valueLine = ref();
 let { deviceInfoList } = useDeviceInfo();
 watch(deviceInfoList, (data) => {
   valueLine.value = data[0]; //find(data,(item)=>routeParams.deviceTypeite===item.w);
+});
+const route = useRoute();
+onMounted(() => {
+  setWebPath('/new-child/' + route.params.deviceType + '/1')
 });
 </script>

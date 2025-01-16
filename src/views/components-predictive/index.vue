@@ -56,6 +56,8 @@ import ChartPie from "./components/chart-pie.vue";
 import ChartLine from "./components/chart-line.vue";
 import ThermalEfficiency from "./components/thermal-efficiency.vue";
 import { useDeviceInfo } from "@/hook/useDeviceInfo";
+import { setWebPath } from "@/utils";
+import { useRouter, useRoute } from "vue-router";
 let open = ref(false);
 let hideModal = () => { };
 const dateFormat = "YYYY/MM/DD";
@@ -67,4 +69,8 @@ const state = reactive({
 });
 
 let { deviceInfoList } = useDeviceInfo();
+const route = useRoute();
+onMounted(() => {
+  setWebPath('/new-child/' + route.params.deviceType + '/1')
+});
 </script>

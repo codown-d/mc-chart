@@ -24,5 +24,10 @@
 import { onMounted, reactive, ref, nextTick, watch } from "vue";
 import Chart from "./components/chart.vue";
 import PreheaterGraph from "@/views/blocking-analysis/components/preheater-graph.vue";
-onMounted(() => {});
+import { useRouter, useRoute } from "vue-router";
+import { setWebPath } from "@/utils";
+const route = useRoute();
+onMounted(() => {
+  setWebPath('/new-child/' + route.params.deviceType + '/1')
+});
 </script>
