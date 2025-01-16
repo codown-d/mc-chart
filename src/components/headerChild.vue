@@ -22,6 +22,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  home: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const state = reactive({
@@ -129,9 +133,9 @@ const handleRecommendationOk = () => {
         <div class="align-end">
           <!-- <img class="container-header-right-install pointer" @click="state.recommenOpen = true"
             src="/images/install.png" /> -->
-          <img class="container-header-right-home pointer" @click="handleRouter('/overview/' + state.deviceType)" src="/images/home.png" />
+          <img class="container-header-right-home pointer" v-if="home" @click="handleRouter('/welcome')" src="/images/home.png" />
         </div>
-        <div class="flex-items container-header-right-border"></div>
+        <div class="flex-items container-header-right-border" v-if="home"></div>
         <img class="container-header-right-user pointer" src="/images/user.png" />
       </div>
     </div>
