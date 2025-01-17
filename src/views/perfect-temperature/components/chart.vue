@@ -1,12 +1,19 @@
 <template>
-  <div class="w-full h-full relative">
-    <pangge-Title text="壁温分析" class="mb-[10px] absolute"></pangge-Title>
-    <div style="height: calc(100%)" class="flex justify-center items-center pt-6 relative">
-      <heatmap :option="option" ref="echartComponent"></heatmap>
-      <div class="absolute w-full h-full bottom-0 pt-6">
-        <Line :option="optionLine" ref="echartComponentLine" />
+  <div class="w-full h-full relative ">
+
+    <img src="/images/bw.png" alt="" class="w-full h-full " />
+    <pangge-Title text="壁温分析" class="mb-[10px] absolute" v-if="title"></pangge-Title>
+
+    <div class="absolute top-[40%] left-[12%] right-[12%] bottom-[28%]">
+      <div style="height: calc(100%)" class="flex justify-center items-center relative">
+        <heatmap :option="option" ref="echartComponent"></heatmap>
+        <div class=" w-full h-full top-0 absolute">
+          <Line :option="optionLine" ref="echartComponentLine" />
+        </div>
       </div>
+
     </div>
+
   </div>
 </template>
 <script setup lang="ts">
@@ -33,6 +40,10 @@ const props = defineProps({
     type: Array,
     default: [],
   },
+  title: {
+    type: Boolean,
+    default: true,
+  },
 });
 const hours = new Array(20).fill("").map((item, index) => index + 1);
 const days = new Array(10).fill("").map((item, index) => "GAS" + (index + 1));
@@ -46,19 +57,19 @@ let optionLine = ref({
       type: "category",
       boundaryGap: false,
       position: "top", // x 轴放到顶部
-      show:false
+      show: false
     },
   ],
   grid: {
-    right: "12%",
-    left: "12%",
-    top: "42%",
-    bottom: "28%",
+    right: "0%",
+    left: "0%",
+    top: "0%",
+    bottom: "0%",
   },
   yAxis: [
     {
       type: "category",
-      show:false
+      show: false
     },
   ],
   series: [],
@@ -74,10 +85,10 @@ let option = ref({
     },
   },
   grid: {
-    right: "12%",
-    left: "12%",
-    top: "42%",
-    bottom: "28%",
+    right: "0%",
+    left: "0%",
+    top: "0%",
+    bottom: "0%",
   },
   yAxis: {
     show: false,

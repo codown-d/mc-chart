@@ -1,6 +1,5 @@
 <template>
   <div class="relative w-full h-full overflow-hidden">
-    <img src="/images/bw.png" alt="" class="absolute w-full h-full top-0 left-0" />
     <div class="chart w-full h-full" id="myCanvas" :class="class" ref="barChart"></div>
   </div>
 </template>

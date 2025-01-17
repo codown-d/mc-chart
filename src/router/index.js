@@ -19,6 +19,7 @@ import PerfectTemperature from '@/views/perfect-temperature/index.vue'
 import ComponentsPredictive from '@/views/components-predictive/index.vue'
 import Analysis from '@/views/analysis/index.vue'
 import Help from '@/views/help/index.vue'
+import Report from '@/views/report/index.vue'
  
 
 const router = createRouter({
@@ -125,6 +126,11 @@ const router = createRouter({
       path: '/help/:deviceType',
       name: 'help',
       component: Help
+    },
+    {
+      path: '/report/:deviceType',
+      name: 'report',
+      component: Report
     },
     {
       path: '/404',

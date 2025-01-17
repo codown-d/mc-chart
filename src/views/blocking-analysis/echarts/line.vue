@@ -1,10 +1,9 @@
 <template>
   <div class="relative w-full h-full">
     <div
-      class="chart"
+      class="chart  w-full h-full"
       :class="class"
       ref="barChart"
-      style="height: 100%; width: 100%"
     ></div>
     <a-spin v-if="!isReady" class="absolute z-10 top-[50%] left-[50%]" />
   </div>

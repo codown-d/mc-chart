@@ -109,9 +109,9 @@
                     >
                       能耗分析
                     </p>
-                    <p v-if="false"
+                    <p 
                       style="cursor: pointer"
-                      @click="handleAclick('/analysis/' + state.deviceType)"
+                      @click="handleAclick('/report/' + state.deviceType)"
                     >
                       报告汇总
                     </p>
