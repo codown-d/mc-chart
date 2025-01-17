@@ -11,7 +11,6 @@
           <Line :option="optionLine" ref="echartComponentLine" />
         </div>
       </div>
-
     </div>
 
   </div>
